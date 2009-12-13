@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Lighter.js - Unit Tests</title>
+	<script type="text/javascript" src="../Source/mootools.core.js"></script>
+	<script type="text/javascript" src="../Source/Flame.js"></script>
+	<script type="text/javascript" src="../Source/Fuel.js"></script>
+	<script type="text/javascript" src="../Source/Lighter.js"></script>
+	<script type="text/javascript">
+		window.addEvent('domready', function() {
+			$$('pre').light({ altLines: 'hover' });
+		});
+	</script>
+</head>
+
+<body>
+	<p>No Code. Should render empty.</p>
+	<pre class="js"></pre>
+	
+	<p>White space two lines. Should render nothing as they are chopped</p>
+	<pre class="js"> 
+ 		   	</pre>
+	
+	<p>White space only. Should render whitespace minus line breaks minus chopped lines.</p>
+	<pre class="js">   		
+			
+			</pre>
+	
+	<p>Multiple classes. Should still render as Javascript</p>
+	<pre class="js:panic moo tools">
+var myMootools = new Class({});
+	</pre>
+	
+	<p>No class should render with standard fuel/flame</p>
+	<pre>
+var myMootools = new Class({});
+	</pre>
+</body>
+
+</html>
