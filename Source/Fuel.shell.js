@@ -35,7 +35,7 @@ Fuel.shell = new Class ({
 		
 		/** Set of RegEx patterns to match */
 		this.patterns = new Hash({
-			'poundComments': {pattern: this.common.poundComments, alias: 'co0'},
+			'poundComments': {pattern: this.common.poundComments, alias: 'co1'},
 			'strings':       {pattern: this.common.strings, alias: 'st0'}
 		});
 		
