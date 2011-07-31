@@ -19,9 +19,9 @@ Fuel.php = new Class({
 	Extends: Fuel,
 	language: 'php',
 	
-	initialize: function(code, options, wicks) {
-	
-		this.keywords = new Hash({
+	initialize: function(options)
+	{
+		this.keywords = {
 			keywords: {
 				csv: "abstract, and, as, break, case, catch, cfunction, class, clone, const, continue, declare, default, do, else, elseif, enddeclare, endfor, endforeach, endif, endswitch, endwhile, extends, final, for, foreach, function, global, goto, if, implements, interface, instanceof, namespace, new, old_function, or, private, protected, public, static, switch, throw, try, use, var, while, xor",
 				alias: 'kw1'
@@ -42,28 +42,28 @@ Fuel.php = new Class({
 				csv: "mysql, mysql_affected_rows, mysql_client_encoding, mysql_close, mysql_connect, mysql_create_db, mysql_createdb, mysql_data_seek, mysql_db_name, mysql_db_query, mysql_dbname, mysql_drop_db, mysql_dropdb, mysql_errno, mysql_error, mysql_escape_string, mysql_fetch_array, mysql_fetch_assoc, mysql_fetch_field, mysql_fetch_lengths, mysql_fetch_object, mysql_fetch_row, mysql_field_flags, mysql_field_len, mysql_field_name, mysql_field_seek, mysql_field_table, mysql_field_type, mysql_fieldflags, mysql_fieldlen, mysql_fieldname, mysql_fieldtable, mysql_fieldtype, mysql_free_result, mysql_freeresult, mysql_get_client_info, mysql_get_host_info, mysql_get_proto_info, mysql_get_server_info, mysql_info, mysql_insert_id, mysql_list_dbs, mysql_list_fields, mysql_list_processes, mysql_list_tables, mysql_listdbs, mysql_listfields, mysql_listtables, mysql_num_fields, mysql_num_rows, mysql_numfields, mysql_numrows, mysql_pconnect, mysql_query, mysql_real_escape_string, mysql_result, mysql_select_db, mysql_selectdb, mysql_stat, mysql_table_name, mysql_tablename, mysql_thread_id, mysql_unbuffered_query, mysqli, mysqli_affected_rows, mysqli_autocommit, mysqli_bind_param, mysqli_bind_result, mysqli_change_user, mysqli_character_set_name, mysqli_client_encoding, mysqli_close, mysqli_commit, mysqli_connect, mysqli_data_seek, mysqli_debug, mysqli_disable_reads_from_master, mysqli_disable_rpl_parse, mysqli_dump_debug_info, mysqli_enable_reads_from_master, mysqli_enable_rpl_parse, mysqli_errno, mysqli_error, mysqli_escape_string, mysqli_execute, mysqli_fetch, mysqli_fetch_array, mysqli_fetch_assoc, mysqli_fetch_field, mysqli_fetch_field_direct, mysqli_fetch_fields, mysqli_fetch_lengths, mysqli_fetch_object, mysqli_fetch_row, mysqli_field_count, mysqli_field_seek, mysqli_field_tell, mysqli_free_result, mysqli_get_client_info, mysqli_get_host_info, mysqli_get_proto_info, mysqli_get_server_info, mysqli_get_server_version, mysqli_info, mysqli_init, mysqli_insert_id, mysqli_kill, mysqli_master_query, mysqli_num_fields, mysqli_num_rows, mysqli_options, mysqli_param_count, mysqli_ping, mysqli_prepare, mysqli_prepare_result, mysqli_profiler, mysqli_query, mysqli_read_query_result, mysqli_real_connect, mysqli_real_escape_string, mysqli_real_query, mysqli_reload, mysqli_rollback, mysqli_rpl_parse_enabled, mysqli_rpl_probe, mysqli_rpl_query_type, mysqli_select_db, mysqli_send_long_data, mysqli_send_query, mysqli_set_opt, mysqli_slave_query, mysqli_ssl_set, mysqli_stat, mysqli_stmt_affected_rows, mysqli_stmt_close, mysqli_stmt_errno, mysqli_stmt_error, mysqli_stmt_store_result, mysqli_store_result, mysqli_thread_id, mysqli_thread_safe, mysqli_use_result, mysqli_warning_count",
 				alias: 'kw2'
 			}
-		});
+		};
 		
-		this.patterns = new Hash({
-			'slashComments': {pattern: this.common.slashComments, alias: 'co1'},
-			'multiComments': {pattern: this.common.multiComments, alias: 'co2'},
-			'strings':       {pattern: this.common.strings,       alias: 'st0'},
-			'heredocs':      {pattern: /(<<<\s*?(\'?)([A-Z0-9]+)\2[^\n]*?\n[\s\S]*?\n\3(?![A-Z0-9\s]))/gim, alias: 'st1'},
-			'numbers':       {pattern: /\b((([0-9]+)?\.)?[0-9_]+([e][\-+]?[0-9]+)?|0x[A-F0-9]+)\b/gi,       alias: 'nu0'},
-			'variables':     {pattern: /[\$]{1,2}[A-Z_][\w]*/gim, alias: 'kw3'},
-			'functions':     {pattern: this.common.functionCalls, alias: 'me1'},
-			'constants':     {pattern: /\b[A-Za-z_][\w]*\b/g,     alias: 'kw4'},
-			'methods':       {pattern: /->([\w]+)/gim,            alias: 'kw3'},
-			'brackets':      {pattern: this.common.brackets,      alias: 'br0'}
-			//'symbols':     {pattern: /!|@|%|&|\||\/|<|>|=|-|\+|\*|\.|:|,|;/g, alias: 'sy0'}
-		});
+		this.patterns = {
+			'slashComments': { pattern: this.common.slashComments, alias: 'co1' },
+			'multiComments': { pattern: this.common.multiComments, alias: 'co2' },
+			'strings':       { pattern: this.common.strings,       alias: 'st0' },
+			'heredocs':      { pattern: /(<<<\s*?(\'?)([A-Z0-9]+)\2[^\n]*?\n[\s\S]*?\n\3(?![A-Z0-9\s]))/gim, alias: 'st1' },
+			'numbers':       { pattern: /\b((([0-9]+)?\.)?[0-9_]+([e][\-+]?[0-9]+)?|0x[A-F0-9]+)\b/gi,       alias: 'nu0' },
+			'variables':     { pattern: /[\$]{1,2}[A-Z_][\w]*/gim, alias: 'kw3' },
+			'functions':     { pattern: this.common.functionCalls, alias: 'me1' },
+			'constants':     { pattern: /\b[A-Za-z_][\w]*\b/g,     alias: 'kw4' },
+			'methods':       { pattern: /->([\w]+)/gim,            alias: 'kw3' },
+			'brackets':      { pattern: this.common.brackets,      alias: 'br0' }
+			//'symbols':     { pattern: /!|@|%|&|\||\/|<|>|=|-|\+|\*|\.|:|,|;/g, alias: 'sy0' }
+		};
 		
 		// Delimiters
-		this.delimiters = new Hash({
-			start: this.strictRegExp('<?php', '<?=', '<%', '<script language="php">'),
-			end:   this.strictRegExp('?>', '%>', '</script>')
-		});
+		this.delimiters = {
+			start: this.strictRegExp('<?php', '<?=', '<%'),
+			end:   this.strictRegExp('?>', '%>')
+		};
 		
-		this.parent(code, options, wicks);
+		this.parent(options);
 	}
 });
