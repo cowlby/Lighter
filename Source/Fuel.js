@@ -127,4 +127,14 @@ var Fuel = this.Fuel = new Class({
 	}
 });
 
+Fuel.standard = new Class({
+    
+    Extends: Fuel,
+    
+    initialize: function(options)
+    {
+        this.parent(options);
+    }
+});
+
 })();
