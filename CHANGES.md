@@ -1,3 +1,13 @@
+### Version 3.0 ###
+
+* Updated Lighter to MooTools 1.3 compatibility. MooTools 1.2 no longer supported.
+* Major refactoring of key components in Lighter. Most notably:
+** New Parser class which takes source code and converts it into an array of matches using a Fuel.
+** New Compiler class which takes the code and the matches and compiles a highlighted Element.
+** New Loader class which handles the dynamic loading of stylesheets and scripts.
+* Code clean up to adhere to a more consistent standard.
+* In-line API documentation added to all classes.
+
 ### Version 2.0 ###
 
 * Switched to Stylesheet based styles. As powerful as the dynamically generated styles are, stylesheets are just too simple to pass up.
