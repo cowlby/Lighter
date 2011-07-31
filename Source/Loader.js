@@ -21,16 +21,17 @@ var Loader = this.Loader = new Class({
     Implements: Options,
     
     options: {
-        flames: null,
-        fuels:  null
+        stylesheets: null,
+        scripts:     null
     },
     
     initialize: function(options)
     {
         this.setOptions(options);
-        this.flames = {};
-        this.fuels  = {};
+        this.stylesheets = {};
+        this.scripts     = {};
         
+		// Figure out path based on script location of Lighter.js or option passed in.
         $$('head script').each(function(el) {
             var script = el.src.split('?', 1),
                 pattern = /Loader\.js$/gi;
@@ -39,34 +40,46 @@ var Loader = this.Loader = new Class({
             }
         }, this);
         
-        if (this.options.flames === null) {
-            this.options.flames = this.basePath;
+        if (this.options.stylesheets === null) {
+            this.options.stylesheets = this.basePath;
         }
         
-        if (this.options.fuels === null) {
-            this.options.fuels = this.basePath;
+        if (this.options.scripts === null) {
+            this.options.scripts = this.basePath;
         }
     },
     
     loadFlame: function(flame)
     {
-        if (this.flames[flame] !== null) {
-            this.flames[flame] = new Element('link', {
+        var fileName = 'Flame.' + flame + '.css?' + Date.now();
+        this.loadStylesheet(fileName, flame);
+    },
+
+    loadFuel: function(fuel, onLoad, onError)
+    {
+        var fileName = 'Fuel.' + fuel + '.js?' + Date.now();
+        this.loadScript(fileName, fuel, onLoad, onError);
+    },
+    
+    loadStylesheet: function(fileName, hash)
+    {
+        if (this.stylesheets[hash] === undefined) {
+            this.stylesheets[hash] = new Element('link', {
                 rel:   'stylesheet',
                 type:  'text/css',
                 media: 'screen',
-                href:  this.options.flames + 'Flame.' + flame + '.css?' + Date.now()
+                href:  this.options.stylesheets + fileName
             }).inject(document.head);
         }
     },
     
-    loadFuel: function(fuel, onLoad, onError)
+    loadScript: function(fileName, hash, onLoad, onError)
     {
         onLoad  = onLoad  || function(){};
         onError = onError || function(){};
         
-        var script = this.fuels[fuel] !== undefined ? this.fuels[fuel] : new Element('script', {
-            src:  this.options.fuels + 'Fuel.' + fuel + '.js?' + Date.now(),
+        var script = this.scripts[hash] || new Element('script', {
+            src:  this.options.scripts + fileName,
 			type: 'text/javascript'
         });
         
@@ -80,8 +93,8 @@ var Loader = this.Loader = new Class({
 			}
         });
         
-        if (this.fuels[fuel] == undefined) {
-            this.fuels[fuel] = script.inject(document.head);
+        if (this.scripts[hash] == undefined) {
+            this.scripts[hash] = script.inject(document.head);
         }
     }
 });
