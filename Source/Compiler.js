@@ -33,7 +33,7 @@ var Compiler = this.Compiler = new Class({
     compile: function(wicks, code, className)
     {
         var el = this._compile(wicks, code);
-	
+        
 	    // Set class and id attributes.
         el.set('class', this.flame + 'Lighter');
         el.set('id', this.id);
