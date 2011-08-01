@@ -42,7 +42,6 @@ Compiler.Lines = new Class({
         var el = new Element(this.options.containerTag.parent),
 	        newLine = new Element(this.options.linesTag.parent),
     	    lineNum = 1,
-    	    pointer = 0,
     	    text    = null,
     	    containerTag = this.options.containerTag,
     	    linesTag     = this.options.linesTag;
@@ -79,8 +78,6 @@ Compiler.Lines = new Class({
     				this.insertAndKeepEl(newLine, text[i], match.type);
     			}
     		}
-    		
-    		pointer = match.end;
     	}, this);
     	
     	newLine.inject(el);
