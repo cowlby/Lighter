@@ -23,7 +23,7 @@ Parser.Strict = new Class({
         this.parent(fuel);
     },
     
-    parse: function(code, offset)
+    _parse: function(code, offset)
     {
         var wicks        = [],
 		    startIndex   = 0,

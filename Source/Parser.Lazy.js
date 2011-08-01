@@ -33,7 +33,7 @@ Parser.Lazy = new Class({
 	 * @param {Number} [offset] Optional offset to add to the match index.
 	 * @return {Array} The array of matches found.
 	 */
-    parse: function(code, offset)
+    _parse: function(code, offset)
     {
         var wicks = [],
 		    match = null,
