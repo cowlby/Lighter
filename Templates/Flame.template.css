@@ -1,17 +1,13 @@
-/**
- * Script:
- *   Flame.template.css - Template to build custom Flame for Lighter.js.
- *
- * License:
- *   MIT-style license.
- * 
- * Author:
- *   Jose Prado
- *
- * Copyright:
- *   Copyright (©) 2009 [Jose Prado](http://pradador.com/).
- *
- */
+/*
+---
+description: Template to build custom Flame for Lighter.js.
+
+license: MIT-style
+
+authors:
+- Jose Prado
+...
+*/
 .myLighter {
 	font-family: Monaco, Courier, Monospace;
 	font-size: 12px;
