@@ -22,15 +22,15 @@ Compiler.List = new Class({
         containerTag: 'ol'
     },
     
-    initialize: function(fuel, flame, options)
+    initialize: function(options)
     {
-        this.parent(fuel, flame, options);
+        this.parent(options);
     },
     
-    _compile: function(wicks)
+    _compile: function(fuel, flame, wicks)
     {
         var el      = new Element(this.options.containerTag),
-	        newLine = new Element('li', { 'class': this.flame + 'line' }).inject(el),
+	        newLine = new Element('li', { 'class': flame + 'line' }).inject(el),
     	    lines   = null;
 
     	// Step through each match and add wicks to the Element by breaking
@@ -43,17 +43,15 @@ Compiler.List = new Class({
     			if (lines[i].length > 0) {
 	    			newLine.grab(new Element('span', {
 						'text': lines[i],
-						'class': wick.type ? this.fuel.aliases[wick.type] || wick.type : ''
+						'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
 					}));
     			}
 
     			if (i < lines.length - 1) {
-    				newLine = new Element('li', { 'class': this.flame + 'line' }).inject(el);
+    				newLine = new Element('li', { 'class': flame + 'line' }).inject(el);
     			}
     		}
     	}, this);
-    	
-    	console.log(this.options);
 
     	// Add alternate line styles based on pseudo-selector.
     	switch (this.options.altLines) {
@@ -73,8 +71,8 @@ Compiler.List = new Class({
     	}
 
     	// Add first/last line classes to correct element based on mode.
-    	el.getFirst().addClass(this.flame + 'first');
-    	el.getLast().addClass(this.flame + 'last');
+    	el.getFirst().addClass(flame + 'first');
+    	el.getLast().addClass(flame + 'last');
     	
     	return el;
     }

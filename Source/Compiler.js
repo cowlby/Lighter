@@ -22,26 +22,23 @@ var Compiler = this.Compiler = new Class({
     
     options: {},
     
-    initialize: function(fuel, flame, options)
+    initialize: function(options)
     {
         this.setOptions(options);
-        this.fuel  = fuel;
-        this.flame = flame;
-    	this.id    = 'Lighter_' + Date.now();
     },
     
-    compile: function(wicks)
+    compile: function(fuel, flame, wicks)
     {
-        var el = this._compile(wicks);
+        var el = this._compile(fuel, flame, wicks);
         
 	    // Set class and id attributes.
-        el.set('class', this.flame + 'Lighter');
-        el.set('id', this.id);
+        el.set('class', flame + 'Lighter');
+        el.set('id', 'Lighter_' + Date.now());
         
         return el;
     },
     
-    _compile: function(wicks)
+    _compile: function(fuel, flame, wicks)
     {
         throw new Error('Extending classes must override the _compile method.');
     }

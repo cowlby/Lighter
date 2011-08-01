@@ -31,12 +31,12 @@ Compiler.Lines = new Class({
         numbersTag: 'span'
     },
     
-    initialize: function(fuel, flame, options)
+    initialize: function(options)
     {
-        this.parent(fuel, flame, options);
+        this.parent(options);
     },
     
-    _compile: function(wicks)
+    _compile: function(fuel, flame, wicks)
     {
         var el           = new Element(this.options.containerTag.parent),
 	        newLine      = null,
@@ -52,8 +52,14 @@ Compiler.Lines = new Class({
     	}
     	
     	// Create a new line and insert the line number if necessary.
-    	newLine = this.createNewLine(el);
-    	lineNum = this.insertLineNum(newLine, lineNum);
+    	newLine = new Element(this.options.linesTag.child, {
+	    	'class': flame + 'line'
+	    }).inject(new Element(this.options.linesTag.parent).inject(el));
+    	
+    	newLine.getParent().grab(new Element(this.options.numbersTag, {
+			'text':  lineNum++,
+			'class': flame + 'num'
+		}), 'top');
 
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
@@ -66,13 +72,19 @@ Compiler.Lines = new Class({
     			if (lines[i].length > 0) {
 	    			newLine.grab(new Element('span', {
 						'text': lines[i],
-						'class': wick.type ? this.fuel.aliases[wick.type] || wick.type : ''
+						'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
 					}));
     			}
     			
     			if (i < lines.length - 1) {
-    				newLine = this.createNewLine(el);
-				    lineNum = this.insertLineNum(newLine, lineNum);
+    				newLine = new Element(this.options.linesTag.child, {
+    			    	'class': flame + 'line'
+    			    }).inject(new Element(this.options.linesTag.parent).inject(el));
+    				
+    				newLine.getParent().grab(new Element(this.options.numbersTag, {
+    					'text':  lineNum++,
+    					'class': flame + 'num'
+    				}), 'top');
     			}
     		}
     	}, this);
@@ -91,14 +103,14 @@ Compiler.Lines = new Class({
     			
     	    default:
 				el.getChildren(':' + this.options.altLines)
-				    .getElement('.' + this.flame + 'line')
+				    .getElement('.' + flame + 'line')
 				    .addClass('alt');
     			break;
     	}
 
     	// Add first/last line classes to correct element based on mode.
-		el.getFirst().getChildren().addClass(this.flame + 'first');
-		el.getLast().getChildren().addClass(this.flame + 'last');
+		el.getFirst().getChildren().addClass(flame + 'first');
+		el.getLast().getChildren().addClass(flame + 'last');
 
     	// Ensure we return the real parent, not just an inner element like a tbody.
     	if (containerTag.child) {
@@ -106,25 +118,5 @@ Compiler.Lines = new Class({
     	}
     	
     	return el;
-    },
-    
-    createNewLine: function(container)
-    {
-	    return new Element(this.options.linesTag.child, {
-	    	'class': this.flame + 'line'
-	    }).inject(new Element(this.options.linesTag.parent).inject(container));
-    },
-
-	/**
-	 * Helper funciton to insert line number into line.
-	 */
-	insertLineNum: function(el, lineNum)
-	{
-		var newNum = new Element(this.options.numbersTag, {
-			'text':  lineNum,
-			'class': this.flame + 'num'
-		}).inject(el.getParent(), 'top');
-
-		return lineNum + 1;
-	}
+    }
 });

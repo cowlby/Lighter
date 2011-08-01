@@ -22,12 +22,12 @@ Compiler.Inline = new Class({
         containerTag: 'pre'
     },
     
-    initialize: function(fuel, flame, options)
+    initialize: function(options)
     {
-        this.parent(fuel, flame, options);
+        this.parent(options);
     },
     
-    _compile: function(wicks)
+    _compile: function(fuel, flame, wicks)
     {
 		var el = new Element(this.options.containerTag);
 	    
@@ -35,7 +35,7 @@ Compiler.Inline = new Class({
 		wicks.each(function(wick) {
 			el.grab(new Element('span', {
 				'text':  wick.text,
-				'class': wick.type ? this.fuel.aliases[wick.type] || wick.type : ''
+				'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
 			}));
 		}, this);
 		
