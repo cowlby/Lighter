@@ -27,16 +27,16 @@ Compiler.Inline = new Class({
         this.parent(fuel, flame, options);
     },
     
-    _compile: function(wicks, code)
+    _compile: function(wicks)
     {
-		var el = new Element(this.options.containerTag),
-		    pointer = 0;
+		var el = new Element(this.options.containerTag);
 	    
 		// Step through each match and add wicks to the element.
-		Object.each(wicks, function(wick) {
-			el.appendText(code.substring(pointer, wick.index));
-			this.insertAndKeepEl(el, wick.text, wick.type);
-			pointer = wick.end;
+		wicks.each(function(wick) {
+			el.grab(new Element('span', {
+				'text':  wick.text,
+				'class': wick.type ? this.fuel.aliases[wick.type] || wick.type : ''
+			}));
 		}, this);
 		
 		return el;

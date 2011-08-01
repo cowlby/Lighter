@@ -37,12 +37,12 @@ Compiler.Lines = new Class({
         this.parent(fuel, flame, options);
     },
     
-    _compile: function(wicks, code)
+    _compile: function(wicks)
     {
-        var el = new Element(this.options.containerTag.parent),
-	        newLine = new Element(this.options.linesTag.parent),
-    	    lineNum = 1,
-    	    text    = null,
+        var el           = new Element(this.options.containerTag.parent),
+	        newLine      = null,
+    	    lineNum      = 1,
+    	    lines        = null,
     	    containerTag = this.options.containerTag,
     	    linesTag     = this.options.linesTag;
 
@@ -51,36 +51,36 @@ Compiler.Lines = new Class({
     	if (containerTag.child !== null) {
     	    el = new Element(containerTag.child).inject(el);
     	}
-
-    	// If code needs to be wrapped in an inner child, create that element
-    	// with this test. (E.g, tr to contain td)
-    	if (linesTag.child !== null) {
-    	    newLine = new Element(linesTag.child).inject(newLine);
-    	}
     	
-    	newLine.addClass(this.flame + 'line');
-    	
-    	if (this.options.lineNumber) {
+    	// Create a new line and insert the line number if necessary.
+    	newLine = this.createNewLine(el);
+    	if (this.options.lineNumbers) {
     	    lineNum = this.insertLineNum(newLine, lineNum);
     	}
 
-    	// Step through each match and add matched/unmatched bits to lighter.
-    	wicks.each(function(match) {
-    		// Create and insert matched symbol.
-    		text = match.text.split('\n');
-    		for (var i = 0; i < text.length; i++) {
-    			if (i < text.length - 1) {
-    				newLine = this.insertAndMakeEl(newLine, el, text[i], match.type);
+    	// Step through each match and add wicks to the Element by breaking
+    	// them up into individual lines.
+    	wicks.each(function(wick) {
+    		
+    		lines = wick.text.split('\n');
+    		
+    		for (var i = 0; i < lines.length; i++) {
+    			
+    			if (lines[i].length > 0) {
+	    			newLine.grab(new Element('span', {
+						'text': lines[i],
+						'class': wick.type ? this.fuel.aliases[wick.type] || wick.type : ''
+					}));
+    			}
+    			
+    			if (i < lines.length - 1) {
+    				newLine = this.createNewLine(el);
     				if (this.options.lineNumbers) {
     				    lineNum = this.insertLineNum(newLine, lineNum);
     				}
-    			} else {
-    				this.insertAndKeepEl(newLine, text[i], match.type);
     			}
     		}
     	}, this);
-    	
-    	newLine.inject(el);
 
     	// Add alternate line styles based on pseudo-selector.
     	switch (this.options.altLines) {
@@ -121,6 +121,20 @@ Compiler.Lines = new Class({
     	}
     	
     	return el;
+    },
+    
+    createNewLine: function(container)
+    {
+		var newLine = new Element(this.options.linesTag.parent);
+		newLine.inject(container);
+		
+		if (this.options.linesTag.child !== null) {
+		    newLine = new Element(this.options.linesTag.child).inject(newLine);
+		}
+		
+		newLine.addClass(this.flame + 'line');
+		
+		return newLine;
     },
 
 	/**
