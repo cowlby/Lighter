@@ -23,15 +23,10 @@
 	<script type="text/javascript" src="../Source/Wick.js"></script>
 	<script type="text/javascript">
 		window.addEvent('domready', function() {
-			var code     = '<?php ?>';
+			var code     = "<?php\necho 'Hello World!';\n?>";
 			var fuel     = new Fuel.php();
 			var parser   = new Parser.Strict(fuel);
-			var compiler = new Compiler.Lines(fuel, {
-				containerTag:   { parent: 'div' },
-				linesTag:       { parent: 'div', child: 'span' },
-				lineNumbers:    true,
-				numbersTag: 'span'
-			});
+			var compiler = new Compiler.Lines(fuel);
 			var loader = new Loader({
 				stylesheets: '../Styles/',
 				scripts:     '../Source/'
@@ -41,8 +36,8 @@
 			loader.loadFuel('php');
 			
 			var wicks  = parser.parse(code);
+			console.log(wicks);
 			var lighter  = compiler.compile(wicks, code);
-			
 			console.log(lighter);
 			
 			lighter.inject(document.id(document.body));
