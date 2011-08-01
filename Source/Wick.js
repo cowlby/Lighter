@@ -22,7 +22,7 @@ var Wick = this.Wick = new Class({
      * Creates an instance of Wick.
      *
      * @constructs
-     * @param {String} text The match text.
+     * @param {String} text  The match text.
      * @param {String} type  The type of match.
      * @param {Number} index The index where the match was found.
      */
