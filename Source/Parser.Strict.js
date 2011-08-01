@@ -17,13 +17,22 @@ provides: [Parser.Strict]
 Parser.Strict = new Class({
 
     Extends: Parser,
-
-    initialize: function(fuel)
+    
+    /**
+     * @constructs
+     */
+    initialize: function()
     {
-        this.parent(fuel);
+    	this.parent();
     },
     
-    _parse: function(code, offset)
+    /**
+	 * @param {Fuel} fuel       The fuel to use for parsing.
+	 * @param {String} code     The code to parse.
+	 * @param {Number} [offset] Optional offset to add to the match index.
+	 * @return {Array} The array of matches found.
+     */
+    _parse: function(fuel, code, offset)
     {
         var wicks        = [],
 		    startIndex   = 0,
@@ -40,7 +49,7 @@ Parser.Strict = new Class({
 		offset = offset || 0;
 		
 		// Create assosciative array of rules for faster access via for...in loop instead of .each().
-		Object.each(this.fuel.getRules(), function(regex, rule) {
+		Object.each(fuel.getRules(), function(regex, rule) {
 			rules[rule] = { pattern: regex, nextIndex: 0 };
 		}, this);
 			

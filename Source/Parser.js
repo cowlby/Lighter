@@ -20,37 +20,22 @@ var Parser = this.Parser = new Class({
     
     /**
      * @constructs
-     * @param {Fuel} fuel The fuel to use for parsing.
      */
-    initialize: function(fuel)
+    initialize: function()
     {
-        this.setFuel(fuel);
-        
-        return this;
-    },
-    
-    getFuel: function()
-    {
-    	return this.fuel;
-    },
-    
-    setFuel: function(fuel)
-    {
-    	this.fuel = fuel;
-    	
-    	return this;
     },
     
     /**
      * Parses source code using fuel regex rules and returns the array of
      * tokens.
      *
+     * @param {Fuel} fuel       The Fuel to use for parsing.
      * @param {String} code     The source code to parse.
      * @param {Number} [offset] Optional offset to add to the found index.
      */
-    parse: function(code, offset)
+    parse: function(fuel, code, offset)
     {
-        var wicks = this._parse(code, offset),
+        var wicks = this._parse(fuel, code, offset),
             text  = null,
             wick  = null;
         
@@ -77,7 +62,7 @@ var Parser = this.Parser = new Class({
     /**
      * Parsing strategy method which child classes must override.
      */
-    _parse: function(code, offset)
+    _parse: function(fuel, code, offset)
     {
         throw new Error('Extending classes must override the _parse method.');
     }
