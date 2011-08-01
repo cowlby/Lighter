@@ -47,11 +47,6 @@ Compiler.Lines = new Class({
     	    containerTag = this.options.containerTag,
     	    linesTag     = this.options.linesTag;
 
-    	// Small hack to ensure tables have no ugly styles.
-    	if (parent[0] == "table") {
-    	    el.set("cellpadding", 0).set("cellspacing", 0).set("border", 0);
-    	}
-
     	// If lines need to be wrapped in an inner parent, create that element
     	// with this test. (E.g, tbody in a table)
     	if (containerTag.child !== null) {
@@ -71,26 +66,7 @@ Compiler.Lines = new Class({
     	}
 
     	// Step through each match and add matched/unmatched bits to lighter.
-    	Object.each(wicks, function(match) {
-
-    		// Create and insert un-matched source code bits.
-    		if (pointer != match.index) {
-    			text = code.substring(pointer, match.index).split("\n");
-    			for (var i = 0; i < text.length; i++) {
-    				if (i < text.length - 1) {
-    					if (text[i] === '') {
-    					    text[i] = ' ';
-    					}
-    					newLine = this.insertAndMakeEl(newLine, el, text[i]);
-    					if (this.options.lineNumbers) {
-    					    lineNum = this.insertLineNum(newLine, lineNum);
-    					}
-    				} else {
-    					this.insertAndKeepEl(newLine, text[i]);
-    				}
-    			}
-    		}
-	
+    	wicks.each(function(match) {
     		// Create and insert matched symbol.
     		text = match.text.split('\n');
     		for (var i = 0; i < text.length; i++) {
@@ -106,17 +82,8 @@ Compiler.Lines = new Class({
     		
     		pointer = match.end;
     	}, this);
-
-    	// Add last unmatched code segment if it exists.
-    	if (pointer <= code.length) {
-    		text = code.substring(pointer, code.length).split('\n');
-    		for (var i = 0; i < text.length; i++) {
-    			newLine = this.insertAndMakeEl(newLine, el, text[i]);
-    			if (this.options.lineNumbers) {
-    			    lineNum = this.insertLineNum(newLine, lineNum);
-    			}
-    		}
-    	}
+    	
+    	newLine.inject(el);
 
     	// Add alternate line styles based on pseudo-selector.
     	if (this.options.altLines !== null) {

@@ -32,17 +32,12 @@ Compiler.Inline = new Class({
 		var el = new Element(this.options.containerTag),
 		    pointer = 0;
 	    
-		// Step through each match and add unmatched + matched bits to el.
+		// Step through each match and add wicks to the element.
 		Object.each(wicks, function(wick) {
 			el.appendText(code.substring(pointer, wick.index));
 			this.insertAndKeepEl(el, wick.text, wick.type);
 			pointer = wick.end;
 		}, this);
-	
-		// Add last unmatched code segment if it exists.
-		if (pointer < code.length) {
-			el.appendText(code.substring(pointer, code.length));
-		}
 		
 		return el;
     }
