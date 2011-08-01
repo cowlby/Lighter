@@ -24,7 +24,21 @@ var Parser = this.Parser = new Class({
      */
     initialize: function(fuel)
     {
-        this.fuel = fuel;
+        this.setFuel(fuel);
+        
+        return this;
+    },
+    
+    getFuel: function()
+    {
+    	return this.fuel;
+    },
+    
+    setFuel: function(fuel)
+    {
+    	this.fuel = fuel;
+    	
+    	return this;
     },
     
     /**
@@ -40,6 +54,7 @@ var Parser = this.Parser = new Class({
             text  = null,
             wick  = null;
         
+        // Add code between matches as an unknown wick to the wick array.
         for (var i = 0, pointer = 0; i < wicks.length; i++) {
             if (pointer < wicks[i].index) {
                 text = code.substring(pointer, wicks[i].index)
@@ -49,6 +64,7 @@ var Parser = this.Parser = new Class({
             pointer = wicks[i].end;
         }
         
+        // Add the final unmatched piece if it exists.
         if (pointer < code.length) {
             text = code.substring(pointer, code.length);
             wick = new Wick(text, 'unknown', pointer);
