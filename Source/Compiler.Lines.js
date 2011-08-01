@@ -21,15 +21,14 @@ Compiler.Lines = new Class({
     options: {
         altLines: null,
         containerTag: {
-            parent: 'ol',
+            parent: 'div',
             child:  null
         },
         linesTag: {
-            parent: 'li',
-            child:  null
+            parent: 'div',
+            child:  'span'
         },
-        lineNumbers: false,
-        numbersTag:  null
+        numbersTag: 'span'
     },
     
     initialize: function(fuel, flame, options)
@@ -54,9 +53,7 @@ Compiler.Lines = new Class({
     	
     	// Create a new line and insert the line number if necessary.
     	newLine = this.createNewLine(el);
-    	if (this.options.lineNumbers) {
-    	    lineNum = this.insertLineNum(newLine, lineNum);
-    	}
+    	lineNum = this.insertLineNum(newLine, lineNum);
 
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
@@ -75,9 +72,7 @@ Compiler.Lines = new Class({
     			
     			if (i < lines.length - 1) {
     				newLine = this.createNewLine(el);
-    				if (this.options.lineNumbers) {
-    				    lineNum = this.insertLineNum(newLine, lineNum);
-    				}
+				    lineNum = this.insertLineNum(newLine, lineNum);
     			}
     		}
     	}, this);
@@ -89,31 +84,21 @@ Compiler.Lines = new Class({
     	        
     	    case 'hover':
     	        el.getElements(containerTag.child || containerTag.parent).addEvents({
-    					'mouseover': function() { this.toggleClass('alt'); },
-    					'mouseout':  function() { this.toggleClass('alt'); }
+    				'mouseover': function() { this.toggleClass('alt'); },
+    				'mouseout':  function() { this.toggleClass('alt'); }
     			});
     			break;
     			
     	    default:
-    	        if (linesTag.child !== null) {
-    				el.getChildren(':'+this.options.altLines)
-    				    .getElement('.'+this.flame+'line')
-    				    .addClass('alt');
-    			} else {
-    				el.getChildren(':'+this.options.altLines).
-    				    addClass('alt');
-    			}
+				el.getChildren(':' + this.options.altLines)
+				    .getElement('.' + this.flame + 'line')
+				    .addClass('alt');
     			break;
     	}
 
     	// Add first/last line classes to correct element based on mode.
-    	if (linesTag.child !== null) {
-    		el.getFirst().getChildren().addClass(this.flame + 'first');
-    		el.getLast().getChildren().addClass(this.flame + 'last');
-    	} else {
-    		el.getFirst().addClass(this.flame + 'first');
-    		el.getLast().addClass(this.flame + 'last');
-    	}
+		el.getFirst().getChildren().addClass(this.flame + 'first');
+		el.getLast().getChildren().addClass(this.flame + 'last');
 
     	// Ensure we return the real parent, not just an inner element like a tbody.
     	if (containerTag.child) {
@@ -125,16 +110,9 @@ Compiler.Lines = new Class({
     
     createNewLine: function(container)
     {
-		var newLine = new Element(this.options.linesTag.parent);
-		newLine.inject(container);
-		
-		if (this.options.linesTag.child !== null) {
-		    newLine = new Element(this.options.linesTag.child).inject(newLine);
-		}
-		
-		newLine.addClass(this.flame + 'line');
-		
-		return newLine;
+	    return new Element(this.options.linesTag.child, {
+	    	'class': this.flame + 'line'
+	    }).inject(new Element(this.options.linesTag.parent).inject(container));
     },
 
 	/**
