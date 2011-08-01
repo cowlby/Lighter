@@ -22,9 +22,9 @@ Compiler.Inline = new Class({
         containerTag: 'pre'
     },
     
-    initialize: function(fuel, options)
+    initialize: function(fuel, flame, options)
     {
-        this.parent(fuel, options);
+        this.parent(fuel, flame, options);
     },
     
     _compile: function(wicks, code)

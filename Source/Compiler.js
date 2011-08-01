@@ -22,11 +22,11 @@ var Compiler = this.Compiler = new Class({
     
     options: {},
     
-    initialize: function(fuel, options)
+    initialize: function(fuel, flame, options)
     {
         this.setOptions(options);
         this.fuel  = fuel;
-        this.flame = 'temp';
+        this.flame = flame;
     	this.id    = 'Lighter_' + Date.now();
     },
     
