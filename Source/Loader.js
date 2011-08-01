@@ -47,18 +47,24 @@ var Loader = this.Loader = new Class({
         if (this.options.scripts === null) {
             this.options.scripts = this.basePath;
         }
+        
+        return this;
     },
     
     loadFlame: function(flame)
     {
         var fileName = 'Flame.' + flame + '.css?' + Date.now();
         this.loadStylesheet(fileName, flame);
+        
+        return this;
     },
 
     loadFuel: function(fuel, onLoad, onError)
     {
         var fileName = 'Fuel.' + fuel + '.js?' + Date.now();
         this.loadScript(fileName, fuel, onLoad, onError);
+        
+        return this;
     },
     
     loadStylesheet: function(fileName, hash)
@@ -71,6 +77,8 @@ var Loader = this.Loader = new Class({
                 href:  this.options.stylesheets + fileName
             }).inject(document.head);
         }
+        
+        return this;
     },
     
     loadScript: function(fileName, hash, onLoad, onError)
@@ -96,6 +104,8 @@ var Loader = this.Loader = new Class({
         if (this.scripts[hash] == undefined) {
             this.scripts[hash] = script.inject(document.head);
         }
+        
+        return this;
     }
 });
 
