@@ -34,7 +34,7 @@ var Loader = this.Loader = new Class({
 		// Figure out path based on script location of Lighter.js or option passed in.
         $$('head script').each(function(el) {
             var script = el.src.split('?', 1),
-                pattern = /Loader\.js$/gi;
+                pattern = /(?:Loader|Lighter)\.js$/gi;
             if (pattern.test(script[0])) {
                 this.basePath = script[0].replace(pattern, '');
             }
