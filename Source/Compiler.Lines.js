@@ -83,19 +83,27 @@ Compiler.Lines = new Class({
     	newLine.inject(el);
 
     	// Add alternate line styles based on pseudo-selector.
-    	if (this.options.altLines !== null) {
-    		if (this.options.altLines == 'hover') {
-    			el.getElements(containerTag.child || containerTag.parent).addEvents({
+    	switch (this.options.altLines) {
+    	    case null:
+    	        break;
+    	        
+    	    case 'hover':
+    	        el.getElements(containerTag.child || containerTag.parent).addEvents({
     					'mouseover': function() { this.toggleClass('alt'); },
     					'mouseout':  function() { this.toggleClass('alt'); }
     			});
-    		} else {
-    			if (linesTag.child !== null) {
-    				el.getChildren(':'+this.options.altLines).getElement('.'+this.flame+'line').addClass('alt');
+    			break;
+    			
+    	    default:
+    	        if (linesTag.child !== null) {
+    				el.getChildren(':'+this.options.altLines)
+    				    .getElement('.'+this.flame+'line')
+    				    .addClass('alt');
     			} else {
-    				el.getChildren(':'+this.options.altLines).addClass('alt');
+    				el.getChildren(':'+this.options.altLines).
+    				    addClass('alt');
     			}
-    		}
+    			break;
     	}
 
     	// Add first/last line classes to correct element based on mode.
