@@ -303,7 +303,7 @@ Element.implement({
     	var lighter = this.retrieve('highlighter');
     	
     	if (lighter === null) {
-    		new Lighter(options);
+    		lighter = new Lighter(options);
         	this.store('highlighter', lighter);
     	}
     	
