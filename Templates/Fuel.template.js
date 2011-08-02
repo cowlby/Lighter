@@ -8,7 +8,7 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
 
 provides: [Fuel.myFuel.js]
  ...
@@ -36,7 +36,7 @@ Fuel.myFuel = new Class ({
 		/** Script Delimiters. Remove or set to null if not applicable. */
 		this.delimiters = {
 			start: this.strictRegExp('startTag1', 'startTag2'),
-			end: this.strictRegExp('endTag1')
+			end:   this.strictRegExp('endTag1')
 		};
 		
 		// Call parent constructor AFTER instance variables are set.
