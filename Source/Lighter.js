@@ -21,53 +21,78 @@ var Lighter = this.Lighter = new Class({
 	Implements: [Options],
 	
 	options: {
-		altLines:  null,
-		clipboard: null,
-		container: null,
-		editable:  false,
-		flame:     'standard',
-		fuel:      'standard',
-		indent:    -1,
-		matchType: 'standard',
-		mode:      'pre',
-		path:      null,
-		strict:    false
+		altLines: null,
+		compiler: null,
+		editable: false,
+		fuel:     'standard',
+		flame:    'standard',
+		indent:   -1,
+		loader:   null,
+		parser:   null
 	},
 
 	initialize: function(options)
 	{
 		this.setOptions(options);
-		
-//		this.codeblock = document.id(codeblock);
-//		this.container = document.id(this.options.container);
-//		this.setCode(codeblock);
-		
-		// Extract fuel/flame names. Precedence: className > options > 'standard'.
-//		var ff    = this.parseClass(this.codeblock.get('class')),
-//		    fuel  = ff.fuel || this.options.fuel,
-//		    flame = ff.flame || this.options.flame;
-		
-		// Create the parser and compiler objects from the options passed in.
-		this.loader   = new Loader();
-		this.parser   = this.parserFactory(this.options.matchType);
-		this.compiler = this.compilerFactory(this.options.mode, this.options.altLines);
-	
-		// Load fuel/flame to start chain of loads.
-		this.loadFlame(this.options.flame);
-		this.loadFuel(this.options.fuel);
 	},
 	
-	setCode: function(codeblock)
+	light: function (codeblock, container)
 	{
-	    this.code = chop(this.codeblock.get('html'))
+		var codeblock = document.id(codeblock),
+			container = document.id(container),
+			code      = this.getCode(codeblock),
+			ff        = this.parseClass(codeblock.get('class')),
+			fuel      = ff.fuel  || this.options.fuel,
+			flame     = ff.flame || this.options.flame;
+
+		// Load fuel/flame to start chain of loads.
+		this.options.loader.loadFlame(flame);
+		this.options.loader.loadFuel(fuel, function() {
+			
+			fuel = new Fuel[fuel]();
+			
+			var wicks   = this.options.parser.parse(fuel, code),
+			    lighter = this.options.compiler.compile(fuel, flame, wicks);
+			
+			if (container) {
+				container.empty();
+				lighter.inject(container);
+			} else {
+				codeblock.setStyle('display', 'none');
+				lighter.inject(codeblock, 'after');
+			}
+			
+			if (this.options.editable) {
+				lighter.set('contenteditable', 'true');
+			}
+			
+		}.bind(this), function() {
+			throw new Error('Could not load fuel ' + fuel + 'successfully.');
+		}.bind(this));
+		
+		return this;
+	},
+	
+	
+	unlight: function(lighter)
+	{
+		throw new Error('Unlight is not yet implemented.');
+	},
+	
+	getCode: function(codeblock)
+	{
+	    var code = codeblock.get('html')
+	    	.replace(/(^\s*\n|\n\s*$)/gi, '')
 	        .replace(/&lt;/gim, '<')
 	        .replace(/&gt;/gim, '>')
 	        .replace(/&amp;/gim, '&');
 	
 		// Indent code if user option is set.
 		if (this.options.indent > -1) {
-	        this.code = tabToSpaces(this.code, this.options.indent);
+			code = code.replace(/\t/g, new Array(this.options.indent + 1).join(' '));
 	    }
+		
+		return code;
 	},
 	
 	parseClass: function(className)
@@ -149,107 +174,16 @@ var Lighter = this.Lighter = new Class({
 		}
 		
 		return parser;
-	},
-	
-	loadFlame: function(flame)
-	{
-	    return this.loader.loadFlame(flame);
-	},
-	
-	loadFuel: function(fuel)
-	{
-		if (typeof(Fuel[fuel]) != 'function' && typeof(Fuel[fuel].prototype) != 'object') {
-			this.loader.loadFuel(fuel, this.loadFuel.pass([fuel], this), function() {
-				this.loadFuel('standard');
-			}.bind(this));
-			return;
-		}
-		
-		this.fuel = new Fuel[fuel]();
-		this.parser.setFuel(this.fuel);
-		//this.light();
-	},
-	
-//	light: function()
-//	{
-//		// Build highlighted code object.
-//		this.element = this.toElement();
-//	
-//		// Insert lighter in the right spot.
-//		if (this.container) {
-//			this.container.empty();
-//			this.element.inject(this.container);
-//		} else {
-//			this.codeblock.setStyle('display', 'none');
-//			this.element.inject(this.codeblock, 'after');
-//			if (this.options.clipboard) {
-//			    this.loadClipboard();
-//			}
-//		}
-//	},
-//	
-//	unlight: function()
-//	{
-//		document.id(this).setStyle('display', 'none');
-//		this.codeblock.setStyle('display', 'inherit');
-//	},
-	
-	loadClipboard: function()
-	{
-		try {
-			var clip = new ZeroClipboard.Client();
-			clip.setPath(this.options.path);
-			clip.glue($(this.options.clipboard));
-			clip.setText(this.code);
-			clip.addEventListener('complete', function(client, text) {
-	        alert("Copied text to clipboard:\n" + text);
-	    });
-		} catch (e) {
-			this.loadScript('clipboard', 'ZeroClipboard.js', {
-				'load': this.loadClipboard.bind(this),
-				'error': function(){}
-			});
-			return false;
-		}
-	},
-
-	/* ----------------------------------- */
-	/* ------>>> toType METHODS <<<------- */
-	/* ----------------------------------- */
-//	toElement: function()
-//	{
-//		if (!this.element) {
-//			this.element = this.builder[this.options.mode]();
-//			if (this.options.editable) { this.element.set('contenteditable', 'true'); }
-//		}
-//	
-//		return this.element;
-//	},
-	
-	toString: function()
-	{
-		return this.code;
 	}
 });
 
 /**
  * Element Native extensions.
  */
-//Element.implement({
-//    light: function(options) {
-//        return new Lighter(this, options);
-//    }
-//});
-
-/**
- * String functions.
- */
-function chop(str) {
-    return str.replace(/(^\s*\n|\n\s*$)/gi, '');
-};
-
-function tabToSpaces(str, spaces) {
-    return str.replace(/\t/g, new Array(spaces + 1).join(' '));
-};
+Element.implement({
+    light: function(options) {
+        throw new Error('light is not fully implemented.');
+    }
+});
 
 })();
