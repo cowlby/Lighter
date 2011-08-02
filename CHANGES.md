@@ -3,8 +3,10 @@
 * Updated Lighter to MooTools 1.3 compatibility. MooTools 1.2 no longer supported.
 * Major refactoring of key components in Lighter. Most notably:
 ** New Parser class which takes source code and converts it into an array of matches using a Fuel.
-** New Compiler class which takes the code and the matches and compiles a highlighted Element.
-** New Loader class which handles the dynamic loading of stylesheets and scripts.
+** New Compiler class which takes an array of Wicks and compiles a highlighted Element.
+** New Loader class which handles the dynamic loading of Flames (stylesheets) and and Fuels (scripts).
+** Lighter Fuel class which now only handles the creation of Regex rules and aliases.
+** Core Lighter functionality has been re-designed using dependency injection.
 * Code clean up to adhere to a more consistent standard.
 * In-line API documentation added to all classes.
 
