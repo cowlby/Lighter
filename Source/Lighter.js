@@ -18,41 +18,143 @@ provides: [Lighter]
 
 var Lighter = this.Lighter = new Class({	
 	
-	Implements: [Options],
+	Implements: [Options, Events],
 	
 	options: {
-		altLines: null,
 		compiler: null,
-		editable: false,
 		fuel:     'standard',
 		flame:    'standard',
 		indent:   -1,
 		loader:   null,
 		parser:   null
 	},
-
+	
+	/**
+	 * @constructs
+	 * @param {Object} options The options object.
+	 * @return {Lighter} The current Lighter instance.
+	 */
 	initialize: function(options)
 	{
 		this.setOptions(options);
+		this.setLoader(this.options.loader);
+		this.setParser(this.options.parser);
+		this.setCompiler(this.options.compiler);
+		
+		return this;
 	},
 	
+	/**
+	 * Returns the stored Loader.
+	 * 
+	 * @return {Loader}
+	 */
+	getLoader: function()
+	{
+		return this.loader;
+	},
+	
+	/**
+	 * Returns the stored Parser.
+	 * 
+	 * @return {Parser}
+	 */
+	getParser: function()
+	{
+		return this.parser;
+	},
+	
+	/**
+	 * Returns the stored Compiler
+	 * 
+	 * @return {Compiler}
+	 */
+	getCompiler: function()
+	{
+		return this.compiler;
+	},
+	
+	/**
+	 * Sets the Loader.
+	 * 
+	 * @param {Loader} loader
+	 * @return {Lighter}
+	 */
+	setLoader: function(loader)
+	{
+		this.loader = loader || new Loader();
+		return this;
+	},
+
+	
+	/**
+	 * Sets the Parser.
+	 * 
+	 * @param {Parser} parser
+	 * @return {Lighter}
+	 */
+	setParser: function(parser)
+	{
+		this.parser = parser || new Parser.Strict();
+		return this;
+	},
+
+	
+	/**
+	 * Sets the Compiler.
+	 * 
+	 * @param {Compiler} compiler
+	 * @return {Lighter}
+	 */
+	setCompiler: function(compiler)
+	{
+		this.compiler = compiler || new Compiler.Inline();
+		return this;
+	},
+	
+	/**
+	 * Takes a codeblock and highlights the code inside of it using the stored
+	 * parser/compilers. It reads the class name to figure out what fuel and
+	 * flame to use for highlighting.
+	 * 
+	 * @param {String|Element} codeblock   The codeblock to highlight.
+	 * @param {String|Element} [container] Optional container to inject the highlighted element into.
+	 * @return {Lighter} The current Lighter instance.
+	 */
 	light: function (codeblock, container)
 	{
 		var codeblock = document.id(codeblock),
 			container = document.id(container),
+			lighter   = codeblock.retrieve('lighter'),
 			code      = this.getCode(codeblock),
 			ff        = this.parseClass(codeblock.get('class')),
 			fuel      = ff.fuel  || this.options.fuel,
 			flame     = ff.flame || this.options.flame;
+		
+		// Lighting is in progress.
+		if (lighter === true) {
+			return this;
+		}
+		
+		// Lighter exists so just toggle display.
+		if (lighter !== null) {
+			codeblock.setStyle('display', 'none');
+			lighter.setStyle('display', 'inherit');
+			return this;
+		}
 
-		// Load fuel/flame to start chain of loads.
-		this.options.loader.loadFlame(flame);
-		this.options.loader.loadFuel(fuel, function() {
+		// Load fuel/flame to and build lighter when ready.
+		this.getLoader().loadFlame(flame);
+		this.getLoader().loadFuel(fuel, function() {
 			
 			fuel = new Fuel[fuel]();
 			
-			var wicks   = this.options.parser.parse(fuel, code),
-			    lighter = this.options.compiler.compile(fuel, flame, wicks);
+			var wicks   = this.getParser().parse(fuel, code),
+			    lighter = this.getCompiler().compile(fuel, flame, wicks);
+			
+			lighter.store('codeblock', codeblock);
+			lighter.store('plaintext', code);
+			codeblock.store('lighter', lighter);
 			
 			if (container) {
 				container.empty();
@@ -62,23 +164,45 @@ var Lighter = this.Lighter = new Class({
 				lighter.inject(codeblock, 'after');
 			}
 			
-			if (this.options.editable) {
-				lighter.set('contenteditable', 'true');
-			}
+			return this;
 			
 		}.bind(this), function() {
 			throw new Error('Could not load fuel ' + fuel + 'successfully.');
 		}.bind(this));
 		
+		// Mark codeblock as lighter initialized.
+		codeblock.store('lighter', true);
+		
 		return this;
 	},
 	
-	
-	unlight: function(lighter)
+	/**
+	 * Unlights a codeblock by hiding the lighter element if present and
+	 * re-displaying the original code.
+	 * 
+	 * @param {String|Element} codeblock The element to unlight.
+	 * @return {Lighter} The current Lighter instance.
+	 */
+	unlight: function(codeblock)
 	{
-		throw new Error('Unlight is not yet implemented.');
+		codeblock = document.id(codeblock);
+		
+		var lighter = codeblock.retrieve('lighter');
+		
+		if (lighter !== null) {
+			codeblock.setStyle('display', 'inherit');
+			lighter.setStyle('display', 'none');
+		}
+		
+		return this;
 	},
 	
+	/**
+	 * Extracts the code from a codeblock.
+	 * 
+	 * @param {Element} codeblock The codeblock that contains the code.
+	 * @return {String} The plain-text code.
+	 */
 	getCode: function(codeblock)
 	{
 	    var code = codeblock.get('html')
@@ -87,7 +211,7 @@ var Lighter = this.Lighter = new Class({
 	        .replace(/&gt;/gim, '>')
 	        .replace(/&amp;/gim, '&');
 	
-		// Indent code if user option is set.
+		// Re-indent code if user option is set.
 		if (this.options.indent > -1) {
 			code = code.replace(/\t/g, new Array(this.options.indent + 1).join(' '));
 	    }
@@ -95,6 +219,13 @@ var Lighter = this.Lighter = new Class({
 		return code;
 	},
 	
+	/**
+	 * Parses a class name for a fuel/flame combo.
+	 * 
+	 * @param {String} className The class name to parse.
+	 * @return {Object} A hash containing the found fuel/flames.
+	 * @todo Find fuel/flame anywhere in the class, not just at the front.
+	 */
 	parseClass: function(className)
 	{
 		var classNames = className.split(' ');
@@ -154,35 +285,44 @@ var Lighter = this.Lighter = new Class({
 		}
 		
 		return compiler;
-	},
-	
-	parserFactory: function(type)
-	{
-		var parser = null;
-		
-		switch (type) {
-			case 'standard':
-				parser = new Parser.Strict();
-				break;
-				
-			case 'lazy':
-				parser = new Parser.Lazy();
-				break;
-				
-			default:
-				throw new Error('Unknown matchType specified.');
-		}
-		
-		return parser;
 	}
 });
 
-/**
- * Element Native extensions.
- */
 Element.implement({
-    light: function(options) {
-        throw new Error('light is not fully implemented.');
+	/**
+	 * Lights an element.
+	 * 
+	 * @param {Object} [options] The options object to use.
+	 * @returns {Element} The current Element instance.
+	 */
+    light: function(options)
+    {
+    	var lighter = this.retrieve('highlighter');
+    	
+    	if (lighter === null) {
+    		new Lighter(options);
+        	this.store('highlighter', lighter);
+    	}
+    	
+    	lighter.light(this);
+    	
+    	return this;
+    },
+    
+    /**
+     * Unlights an element.
+     * 
+     * @returns {Element} The current Element instance.
+     */
+    unlight: function()
+    {
+    	var lighter = this.retrieve('highlighter');
+    	
+    	if (lighter !== null) {
+    		lighter.unlight(this);
+    	}
+    	
+    	return this;
     }
 });
 
