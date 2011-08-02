@@ -18,20 +18,29 @@
 	<script type="text/javascript" src="../Source/Wick.js"></script>
 	<script type="text/javascript">
 		window.addEvent('domready', function() {
-			var code   = "",
-			    lang   = 'php',
-			    flame  = 'git';
-			
-			var lighter  = new Lighter({
-				loader:   new Loader({
-					stylesheets: '../Styles/',
-					scripts:     '../Source/'
-				}),
+			/*var lighter = new Lighter({
+				loader:   new Loader({ stylesheets: '../Styles/' }),
 				parser:   new Parser.Strict(),
 				compiler: new Compiler.List()
 			});
 			
 			lighter.light(document.id('theCode'));
+			lighter.light(document.id('theCode'));*/
+			document.id('theCode').light({
+				loader: new Loader({ stylesheets: '../Styles/' })
+			});
+			
+			document.id('light').addEvent('click', function() {
+				document.id('theCode').light();
+			});
+			
+			document.id('unlight').addEvent('click', function() {
+				document.id('theCode').unlight();
+			});
+			
+			document.id('plaintext').addEvent('click', function() {
+				document.id('theCode').retrieve('lighter').retrieve('plaintext');
+			});
 		});
 	</script>
 </head>
@@ -42,6 +51,9 @@
 echo 'Hello World!';
 ?&gt;
 </pre>
+<button id="light">Light</button>
+<button id="unlight">Unlight</button>
+<button id="plaintext">Get Code</button>
 </body>
 
 </html>
