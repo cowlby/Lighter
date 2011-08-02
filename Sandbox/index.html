@@ -5,47 +5,43 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Lighter.js - Sandbox</title>
 	<script type="text/javascript" src="../Vendor/mootools-core-1.3.2-full-nocompat.js"></script>
+	<script type="text/javascript" src="../Source/Lighter.js"></script>
 	<script type="text/javascript" src="../Source/Parser.js"></script>
 	<script type="text/javascript" src="../Source/Parser.Lazy.js"></script>
 	<script type="text/javascript" src="../Source/Parser.Strict.js"></script>
 	<script type="text/javascript" src="../Source/Compiler.js"></script>
 	<script type="text/javascript" src="../Source/Compiler.Inline.js"></script>
 	<script type="text/javascript" src="../Source/Compiler.Lines.js"></script>
+	<script type="text/javascript" src="../Source/Compiler.List.js"></script>
 	<script type="text/javascript" src="../Source/Loader.js"></script>
 	<script type="text/javascript" src="../Source/Fuel.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.js.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.md.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.php.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.python.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.ruby.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.shell.js"></script>
-	<script type="text/javascript" src="../Source/Fuel.sql.js"></script>
 	<script type="text/javascript" src="../Source/Wick.js"></script>
 	<script type="text/javascript">
 		window.addEvent('domready', function() {
-			var code     = "<?php\necho 'Hello World!';\n?>";
-			var fuel     = new Fuel.php();
-			var parser   = new Parser.Strict(fuel);
-			var compiler = new Compiler.Lines(fuel);
-			var loader = new Loader({
-				stylesheets: '../Styles/',
-				scripts:     '../Source/'
+			var code   = "",
+			    lang   = 'php',
+			    flame  = 'git';
+			
+			var lighter  = new Lighter({
+				loader:   new Loader({
+					stylesheets: '../Styles/',
+					scripts:     '../Source/'
+				}),
+				parser:   new Parser.Strict(),
+				compiler: new Compiler.List()
 			});
-			loader.loadFlame('git');
-			loader.loadFuel('css');
-			loader.loadFuel('php');
 			
-			var wicks  = parser.parse(code);
-			console.log(wicks);
-			var lighter  = compiler.compile(wicks, code);
-			console.log(lighter);
-			
-			lighter.inject(document.id(document.body));
+			lighter.light(document.id('theCode'));
 		});
 	</script>
 </head>
 
 <body>
+<pre id="theCode" class="php:git">
+&lt;?php
+echo 'Hello World!';
+?&gt;
+</pre>
 </body>
 
 </html>
