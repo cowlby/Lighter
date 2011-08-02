@@ -19,9 +19,9 @@ Fuel.css = new Class({
 	Extends: Fuel,
 	language: 'css',
 		
-	initialize: function(code, options) {
-		/** CSS Properties up to CSS3 spec from http://meiert.com/en/indices/css-properties/ */
-		this.keywords = new Hash({
+	initialize: function(options) {
+		
+		this.keywords = {
 			css1: {
 				csv: "background-attachment, background-color, background-image, background-position, background-repeat, background, border-bottom, border-bottom-width, border-color, border-left, border-left-width, border-right, border-right-width, border-style, border-top, border-top-width, border-width, border, clear, color, display, float, font-family, font-size, font-style, font-variant, font-weight, font, height, letter-spacing, line-height, list-style-image, list-style-position, list-style-type, list-style, margin-bottom, margin-left, margin-right, margin-top, margin, padding-bottom, padding-left, padding-right, padding-top, padding, text-align, text-decoration, text-indent, text-transform, vertical-align, white-space, width, word-spacing",
 				alias: 'kw1'
@@ -38,21 +38,24 @@ Fuel.css = new Class({
 				csv: "100, 200, 300, 400, 500, 600, 700, 800, 900, above, absolute, always, aqua, armenian, auto, avoid, baseline, below, bidi-override, black, blink, block, blue, bold, bolder, both, bottom, break-all, break-strict, break-word, break, capitalize, caption, center, circle, cjk-ideographic, close-quote, collapse, compact, condensed, crop, cross, crosshair, dashed, decimal-leading-zero, decimal, default, disc, dotted, double, e-resize, embed, expanded, extra-condensed, extra-expanded, fixed, fuchsia, georgian, gray, green, groove, hand, hebrew, help, hidden, hide, higher, hiragana-iroha, hiragana, icon, inherit, inline-table, inline, inset, inside, invert, italic, justify, katakana-iroha, katakana, keep-all, konq-center, landscape, large, larger, left, level, light, lighter, lime, line-through, list-item, loose, loud, lower-alpha, lower-greek, lower-latin, lower-roman, lowercase, lower, ltr, marker, maroon, medium, menu, message-box, middle, mix, move, n-resize, narrower, navy, ne-resize, never, no-close-quote, no-open-quote, no-repeat, none, normal, nowrap, nw-resize, oblique, olive, open-quote, outset, outside, overline, pointer, portrait, pre-wrap, pre, purple, red, relative, repeat, repeat-x, repeat-y, ridge, right, rtl, run-in, s-resize, scroll, se-resize, semi-condensed, semi-expanded, separate, show, silver, small-caps, small-caption, smaller, small, solid, square, static-position, static, status-bar, sub, super, sw-resize, table-caption, table-cell, table-column-group, table-column, table-footer-group, table-header-group, table-row, table-row-group, table, teal, text-bottom, text-top, text, thick, thin, top, transparent, ultra-condensed, ultra-expanded, underline, upper-alpha, upper-latin, upper-roman, uppercase, visible, w-resize, wait, white, wider, x-large, x-small, xx-large, xx-small, yellow",
 				alias: 'kw3'
 			}
-		});
-		this.patterns = new Hash({
-			'multiComments': {pattern: this.common.multiComments, alias: 'co1'},
-			'strings':       {pattern: this.common.strings,       alias: 'st0'},
-			'selectors': {pattern: /([^\}\n]+)\{/gi,              alias: 'se0'},
-			'uri':       {pattern: /url\s*\([^\)]*\)/gi,          alias: 'kw4'},
-			'units':     {pattern: /\b(\d+[\.\d+]?\s*(px|pt|em|ex|cm|in|mm|pc|%)?)/gi, alias: 'nu0'},
-			'hexColors': {pattern: /(#[A-F0-9]{3}([A-F0-9]{3})?)\b/gi,                 alias: 'kw3'},
-			'rgbColors': {pattern: /(rgb\s*\(([1-2]?[0-9]{2}(\,\s*)?){3}\))/g,         alias: 'kw3'}
-		});
-		this.delimiters = new Hash({
+		};
+		
+		this.patterns = {
+			'multiComments': { pattern: this.common.multiComments, alias: 'co1' },
+			'strings':       { pattern: this.common.strings,       alias: 'st0' },
+			'selectors':     { pattern: /([^\}\n]+)\{/gi,          alias: 'se0' },
+			'uri':           { pattern: /url\s*\([^\)]*\)/gi,      alias: 'kw4' },
+			'units':         { pattern: /\b(\d+[\.\d+]?\s*(px|pt|em|ex|cm|in|mm|pc|%)?)/gi, alias: 'nu0' },
+			'hexColors':     { pattern: /(#[A-F0-9]{3}([A-F0-9]{3})?)\b/gi,                 alias: 'kw3' },
+			'rgbColors':     { pattern: /(rgb\s*\(([1-2]?[0-9]{2}(\,\s*)?){3}\))/g,         alias: 'kw3' }
+		};
+		
+		this.delimiters = {
 			start: this.strictRegExp('<style type="text/css">'),
 			end:   this.strictRegExp('</style>')
-		})
-		this.parent(code, options);
+		};
+		
+		this.parent(options);
 	}
 	
 });
