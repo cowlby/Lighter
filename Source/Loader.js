@@ -61,6 +61,10 @@ var Loader = this.Loader = new Class({
 
     loadFuel: function(fuel, onLoad, onError)
     {
+    	if (typeof(Fuel[fuel]) == 'function' && typeof(Fuel[fuel].prototype) == 'object') {
+    		return onLoad();
+    	}
+    	
         var fileName = 'Fuel.' + fuel + '.js?' + Date.now();
         this.loadScript(fileName, fuel, onLoad, onError);
         
