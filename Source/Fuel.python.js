@@ -5,14 +5,13 @@ description: Python language fuel.
 license: MIT-style
 
 authors:
-- Jose Prado
 - Italo Maia
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Fuel
 
 provides: [Fuel.python]
-
 ...
 */
 Fuel.python = new Class({
@@ -20,7 +19,7 @@ Fuel.python = new Class({
     Extends:Fuel,
     language:'python',
     
-    initialize: function(code, options)
+    initialize: function(options)
     {
         this.keywords = {
             reserved:{
@@ -96,6 +95,6 @@ Fuel.python = new Class({
             }
         };
           
-        this.parent(options)
+        this.parent(options);
     }
 });

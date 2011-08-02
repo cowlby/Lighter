@@ -8,10 +8,10 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Fuel
 
 provides: [Fuel.html]
-
 ...
 */
 Fuel.html = new Class ({
@@ -19,18 +19,18 @@ Fuel.html = new Class ({
 	Extends: Fuel,
 	language: 'html',
 	
-	initialize: function(code, options) {
+	initialize: function(options) {
 	
 		// Ensure Fuel uses lazy match.
 		options.matchType = "lazy";
 		
 		// Common HTML patterns
-		this.patterns = new Hash({
+		this.patterns = {
 			'comments':    {pattern: /(?:\&lt;|<)!--[\s\S]*?--(?:\&gt;|>)/gim,          alias: 'co1'},
 			'cdata':       {pattern: /(?:\&lt;|<)!\[CDATA\[[\s\S]*?\]\](?:\&gt;|>)/gim, alias: 'st1'},
 			'closingTags': {pattern: /(?:\&lt;|<)\/[A-Z][A-Z0-9]*?(?:\&gt;|>)/gi,       alias: 'kw1'},
 			'doctype':     {pattern: /(?:\&lt;|<)!DOCTYPE[\s\S]+?(?:\&gt;|>)/gim,       alias: 'st2'}
-		});
+		};
 		
 		// Tags + attributes matching and preprocessing.
 		var tagPattern = /((?:\&lt;|<)[A-Z][A-Z0-9]*)(.*?)(\/?(?:\&gt;|>))/gi,
@@ -54,7 +54,7 @@ Fuel.html = new Class ({
 			matches.push(new Wick(match[3], 'kw1', match.index + match[1].length + match[2].length));
 		}
 		
-		this.parent(code, options, matches);
+		this.parent(options);
 	}
 	
 });

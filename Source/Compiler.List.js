@@ -8,7 +8,8 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Compiler
 
 provides: [Compiler.List]
 ...

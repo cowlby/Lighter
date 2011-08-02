@@ -8,10 +8,10 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Fuel
 
 provides: [Fuel.shell]
-
 ...
 */
 Fuel.shell = new Class ({
@@ -33,8 +33,14 @@ Fuel.shell = new Class ({
 		},
 		
 		this.patterns = {
-			'poundComments': { pattern: this.common.poundComments, alias: 'co1' },
-			'strings':       { pattern: this.common.strings, alias: 'st0' }
+			'poundComments': {
+				pattern: this.common.poundComments,
+				alias:   'co1'
+			},
+			'strings': {
+				pattern: this.common.strings,
+				alias:   'st0'
+			}
 		};
 		
 		this.parent(options);

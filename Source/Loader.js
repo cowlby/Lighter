@@ -8,10 +8,9 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
 
 provides: [Loader]
-
 ...
 */
 (function() {
@@ -31,7 +30,7 @@ var Loader = this.Loader = new Class({
         this.stylesheets = {};
         this.scripts     = {};
         
-		// Figure out path based on script location of Lighter.js or option passed in.
+        // Figure out path based on script location of Lighter.js or option passed in.
         $$('head script').each(function(el) {
             var script = el.src.split('?', 1),
                 pattern = /(?:Loader|Lighter)\.js$/gi;

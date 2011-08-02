@@ -8,10 +8,10 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Fuel
 
 provides: [Fuel.js]
-
 ...
 */
 Fuel.js = new Class({
@@ -37,14 +37,38 @@ Fuel.js = new Class({
 		};
 		
 		this.patterns = {
-			'slashComments': { pattern: this.common.slashComments, alias: 'co1' },
-			'multiComments': { pattern: this.common.multiComments, alias: 'co2' },
-			'strings':       { pattern: this.common.strings,       alias: 'st0' },
-			'methodCalls':   { pattern: this.common.properties,    alias: 'me0' },
-			'brackets':      { pattern: this.common.brackets,      alias: 'br0' },
-			'numbers':       { pattern: /\b((([0-9]+)?\.)?[0-9_]+([e][-+]?[0-9]+)?|0x[A-F0-9]+)\b/gi, alias: 'nu0' },
-			'regex':         { pattern: this.delimToRegExp("/", "\\", "/", "g", "[gimy]*"), alias: 're0' },
-			'symbols':       { pattern: /\+|-|\*|\/|%|!|@|&|\||\^|\<|\>|=|,|\.|;|\?|:/g,     alias: 'sy0' }
+			'slashComments': {
+				pattern: this.common.slashComments,
+				alias:   'co1'
+			},
+			'multiComments': {
+				pattern: this.common.multiComments,
+				alias:   'co2'
+			},
+			'strings': {
+				pattern: this.common.strings,
+				alias:   'st0'
+			},
+			'methodCalls': {
+				pattern: this.common.properties,
+				alias:   'me0'
+			},
+			'brackets': {
+				pattern: this.common.brackets,
+				alias:   'br0'
+			},
+			'numbers': {
+				pattern: /\b((([0-9]+)?\.)?[0-9_]+([e][-+]?[0-9]+)?|0x[A-F0-9]+)\b/gi,
+				alias:   'nu0'
+			},
+			'regex': {
+				pattern: this.delimToRegExp("/", "\\", "/", "g", "[gimy]*"),
+				alias:   're0'
+			},
+			'symbols': {
+				pattern: /\+|-|\*|\/|%|!|@|&|\||\^|\<|\>|=|,|\.|;|\?|:/g,
+				alias:   'sy0'
+			}
 		};
 		
 		this.delimiters = {

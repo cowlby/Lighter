@@ -8,10 +8,10 @@ authors:
 - Jose Prado
 
 requires:
-  core/1.2.4: '*'
+- core/1.3: '*'
+- Parser
 
 provides: [Parser.Strict]
-
 ...
 */
 Parser.Strict = new Class({
