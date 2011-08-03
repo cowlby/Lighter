@@ -68,7 +68,7 @@ var Lighter = this.Lighter = new Class({
      */
     setParser: function(parser)
     {
-        this.parser = parser || new Parser.Strict();
+        this.parser = parser || new Parser.Smart();
         return this;
     },
 

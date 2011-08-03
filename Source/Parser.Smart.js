@@ -1,6 +1,6 @@
 /*
 ---
-description: Strict parsing engine for Lighter.
+description: Smart parsing engine for Lighter.
 
 license: MIT-style
 
@@ -11,10 +11,10 @@ requires:
 - core/1.3: '*'
 - Parser
 
-provides: [Parser.Strict]
+provides: [Parser.Smart]
 ...
 */
-Parser.Strict = new Class({
+Parser.Smart = new Class({
 
     Extends: Parser,
     
