@@ -29,17 +29,22 @@ Compiler.Inline = new Class({
     
     _compile: function(fuel, flame, wicks)
     {
-    	var innerHtml = '',
-    	    className = '';
+    	var innerHTML = '',
+    		wick      = null,
+    		className = '',
+    		text      = '',
+    		i;
 		
 		// Step through each match and add wicks as text to the innerHtml.
-    	for (var i = 0; i < wicks.length; i++) {
-			className = wicks[i].type ? fuel.aliases[wicks[i].type] || wicks[i].type : '';
-			innerHtml += '<span class="' + className + '">' + wicks[i].text + '</span>';
+    	for (i = 0; i < wicks.length; i++) {
+    		wick = wicks[i];
+			text = wick.text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;');
+			className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
+			innerHTML += '<span class="' + className + '">' + text + '</span>';
 		}
 		
 		return new Element(this.options.containerTag, {
-			'html': innerHtml
+			'html': innerHTML
 		});
     }
 });
