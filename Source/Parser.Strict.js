@@ -21,9 +21,9 @@ Parser.Strict = new Class({
     /**
      * @constructs
      */
-    initialize: function()
+    initialize: function(options)
     {
-    	this.parent();
+    	this.parent(options);
     },
     
     /**
@@ -36,7 +36,7 @@ Parser.Strict = new Class({
     {
         var wicks        = [],
 		    startIndex   = 0,
-		    matchIndex   = code.length
+		    matchIndex   = code.length,
 		    insertIndex  = 0,
 		    match        = null,
 		    text         = null,
@@ -52,7 +52,7 @@ Parser.Strict = new Class({
 		Object.each(fuel.getRules(), function(regex, rule) {
 			rules[rule] = { pattern: regex, nextIndex: 0 };
 		}, this);
-			
+		
 		/**
 		 * Step through the source code sequentially finding the left-most/earliest matches and then
 		 * continuing beyond the end of that match to prevent parser from adding inner matches.

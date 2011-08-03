@@ -21,9 +21,9 @@ Parser.Lazy = new Class({
     /**
      * @constructs
      */
-    initialize: function()
+    initialize: function(options)
     {
-    	this.parent();
+    	this.parent(options);
     },
     
 	/**
