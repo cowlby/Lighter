@@ -220,44 +220,6 @@ var Lighter = this.Lighter = new Class({
 			fuel:  ff[0],
 			flame: ff[1]
 		};
-	},
-	
-	compilerFactory: function(mode, altLines)
-	{
-		var compiler = null;
-		
-		switch (mode) {
-			case 'inline':
-				compiler = new Compiler.Inline({ containerTag: 'code' });
-				break;
-				
-			case 'pre':
-				compiler = new Compiler.Inline({ containerTag: 'pre' });
-				break;
-				
-			case 'ol':
-				compiler = new Compiler.List({ altLines: altLines });
-				break;
-				
-			case 'div':
-				compiler = new Compiler.Lines({ altLines: altLines });
-				break;
-				
-			case 'table':
-				compiler = new Compiler.Lines({
-			        altLines:     altLines,
-			        containerTag: { parent: 'table', child:  'tbody' },
-			        linesTag:     { parent: 'tr', child:  'td' },
-			        numbersTag:   'td'
-			    });
-				break;
-				
-			default:
-				throw new Error('Unknown mode specified.');
-				break;
-		}
-		
-		return compiler;
 	}
 });
 
