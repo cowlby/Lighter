@@ -18,11 +18,18 @@ provides: [Parser]
 
 var Parser = this.Parser = new Class({
     
+	Implements: [Options],
+	
+	options: {
+		strict: false
+	},
+	
     /**
      * @constructs
      */
-    initialize: function()
+    initialize: function(options)
     {
+    	this.setOptions(options);
     },
     
     /**
@@ -35,14 +42,38 @@ var Parser = this.Parser = new Class({
      */
     parse: function(fuel, code, offset)
     {
-        var wicks = this._parse(fuel, code, offset),
+        var wicks = [],
             text  = null,
             wick  = null;
+        
+//        if (this.options.strict && fuel.hasDelimiters()) {
+//        	var match    = null,
+//        	    endMatch = null,
+//        	    codeBeg  = 0,
+//        	    codeEnd  = code.length,
+//        	    codeSeg  = '';
+//        	
+//        	while ((match = fuel.delimiters.start.exec(code)) != null) {
+//        		fuel.delimiters.end.lastIndex = fuel.delimiters.start.lastIndex;
+//        		if ((endMatch = fuel.delimiters.end.exec(code)) != null) {
+//        			wicks.push(new Wick(match[0], 'de1', match.index));
+//	        		codeBeg = fuel.delimiters.start.lastIndex;
+//	        		codeEnd = endMatch.index - 1;
+//	        		codeSeg = code.substring(codeBeg, codeEnd);
+//	        		wicks.append(this._parse(fuel, codeSeg, codeBeg));
+//	        		wicks.push(new Wick(endMatch[0], 'de2', endMatch.index));
+//        		}
+//    		}
+//        } else {
+//        	wicks.append(this._parse(fuel, code, offset));
+//        }
+        
+        wicks = this._parse(fuel, code, offset);
         
         // Add code between matches as an unknown wick to the wick array.
         for (var i = 0, pointer = 0; i < wicks.length; i++) {
             if (pointer < wicks[i].index) {
-                text = code.substring(pointer, wicks[i].index)
+                text = code.substring(pointer, wicks[i].index);
                 wick = new Wick(text, 'unknown', pointer);
                 wicks.splice(i, 0, wick);
             }
