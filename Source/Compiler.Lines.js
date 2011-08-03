@@ -42,11 +42,14 @@ Compiler.Lines = new Class({
 	        innerHtml    = '',
     	    lineNum      = 1,
     	    lines        = null,
-    	    containerTag = this.options.containerTag;
+    	    wick         = null,
+    	    className    = '',
+    	    text         = '',
+    	    i, j;
 
     	// If lines need to be wrapped in an inner parent, create that element
     	// with this test. (E.g, tbody in a table)
-    	if (containerTag.child !== null) {
+    	if (this.options.containerTag.child !== null) {
     	    el = new Element(containerTag.child).inject(el);
     	}
     	
@@ -61,15 +64,14 @@ Compiler.Lines = new Class({
 
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
-		for (var i = 0; i < wicks.length; i++) {
-    		var wick = wicks[i];
+		for (i = 0; i < wicks.length; i++) {
+    		wick  = wicks[i];
     		lines = wick.text.split('\n');
-    		
-    		for (var j = 0; j < lines.length; j++) {
+    		for (j = 0; j < lines.length; j++) {
     			
     			if (lines[j].length > 0) {
-	    			var className = wick.type ? fuel.aliases[wick.type] || wick.type : '',
-	    				text = lines[j].replace('<', '&lt;');
+	    			className = wick.type ? fuel.aliases[wick.type] || wick.type : '',
+	    			text = lines[j].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;');
 	    			innerHtml += '<span class="' + className + '">' + text + '</span>';
     			}
     			
@@ -99,7 +101,7 @@ Compiler.Lines = new Class({
     	        break;
     	        
     	    case 'hover':
-    	        el.getElements(containerTag.child || containerTag.parent).addEvents({
+    	        el.getElements(this.options.containerTag.child || this.options.containerTag.parent).addEvents({
     				'mouseover': function() { this.toggleClass('alt'); },
     				'mouseout':  function() { this.toggleClass('alt'); }
     			});
@@ -117,7 +119,7 @@ Compiler.Lines = new Class({
 		el.getLast().getChildren().addClass(flame + 'last');
 
     	// Ensure we return the real parent, not just an inner element like a tbody.
-    	if (containerTag.child) {
+    	if (this.options.containerTag.child) {
     	    el = el.getParent();
     	}
     	
