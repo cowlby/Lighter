@@ -38,50 +38,50 @@ Compiler.List = new Class({
             lines     = null,
             i, j;
         
-    	// Step through each match and add wicks to the Element by breaking
-    	// them up into individual lines.
+        // Step through each match and add wicks to the Element by breaking
+        // them up into individual lines.
         for (i = 0; i < wicks.length; i++) {
-        	wick  = wicks[i];
-    		lines = wick.text.split('\n');
-    		for (j = 0; j < lines.length; j++) {
-    			
-    			if (lines[j].length > 0) {
-	    			className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
-	    			text = lines[j].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;');
-	    			innerHTML += '<span class="' + className + '">' + text + '</span>';
-    			}
+            wick  = wicks[i];
+            lines = wick.text.split('\n');
+            for (j = 0; j < lines.length; j++) {
+                
+                if (lines[j].length > 0) {
+                    className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
+                    text = lines[j].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;');
+                    innerHTML += '<span class="' + className + '">' + text + '</span>';
+                }
 
-    			if (j < lines.length - 1) {
-    				className = flame + 'line';
-    				innerHTML += '</li><li class="' + className + '">';
-    			}
-    		}
-    	}
-    	
+                if (j < lines.length - 1) {
+                    className = flame + 'line';
+                    innerHTML += '</li><li class="' + className + '">';
+                }
+            }
+        }
+        
         innerHTML += '</li>';
-    	el.set('html', innerHTML);
+        el.set('html', innerHTML);
 
-    	// Add last line classes to correct element.
-    	el.getLast().addClass(flame + 'last');
-    	
+        // Add last line classes to correct element.
+        el.getLast().addClass(flame + 'last');
+        
 
-    	// Add alternate line styles based on pseudo-selector.
-    	switch (this.options.altLines) {
-    	    case null:
-    	        break;
-    	        
-    	    case 'hover':
-    	        el.getElements('li').addEvents({
-    				'mouseover': function() { this.toggleClass('alt'); },
-    				'mouseout':  function() { this.toggleClass('alt'); }
-    			});
-    			break;
-    			
-    	    default:
-				el.getChildren(':' + this.options.altLines).addClass('alt');
-    			break;
-    	}
-    	
-    	return el;
+        // Add alternate line styles based on pseudo-selector.
+        switch (this.options.altLines) {
+            case null:
+                break;
+                
+            case 'hover':
+                el.getElements('li').addEvents({
+                    'mouseover': function() { this.toggleClass('alt'); },
+                    'mouseout':  function() { this.toggleClass('alt'); }
+                });
+                break;
+                
+            default:
+                el.getChildren(':' + this.options.altLines).addClass('alt');
+                break;
+        }
+        
+        return el;
     }
 });

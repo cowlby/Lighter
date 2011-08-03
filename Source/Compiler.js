@@ -22,7 +22,7 @@ var Compiler = this.Compiler = new Class({
     Implements: Options,
     
     options: {
-    	editable: false
+        editable: false
     },
     
     /**
@@ -50,12 +50,12 @@ var Compiler = this.Compiler = new Class({
     {
         var lighter = this._compile(fuel, flame, wicks);
         
-	    // Set class and id attributes.
+        // Set class and id attributes.
         lighter.set('class', flame + 'Lighter');
         lighter.set('id', 'Lighter_' + Date.now());
         
         if (this.options.editable) {
-        	lighter.set('contenteditable', 'true');
+            lighter.set('contenteditable', 'true');
         }
         
         return lighter;

@@ -18,18 +18,18 @@ provides: [Parser]
 
 var Parser = this.Parser = new Class({
     
-	Implements: [Options],
-	
-	options: {
-		strict: false
-	},
-	
+    Implements: [Options],
+    
+    options: {
+        strict: false
+    },
+    
     /**
      * @constructs
      */
     initialize: function(options)
     {
-    	this.setOptions(options);
+        this.setOptions(options);
     },
     
     /**
@@ -47,25 +47,25 @@ var Parser = this.Parser = new Class({
             wick  = null;
         
 //        if (this.options.strict && fuel.hasDelimiters()) {
-//        	var match    = null,
-//        	    endMatch = null,
-//        	    codeBeg  = 0,
-//        	    codeEnd  = code.length,
-//        	    codeSeg  = '';
-//        	
-//        	while ((match = fuel.delimiters.start.exec(code)) != null) {
-//        		fuel.delimiters.end.lastIndex = fuel.delimiters.start.lastIndex;
-//        		if ((endMatch = fuel.delimiters.end.exec(code)) != null) {
-//        			wicks.push(new Wick(match[0], 'de1', match.index));
-//	        		codeBeg = fuel.delimiters.start.lastIndex;
-//	        		codeEnd = endMatch.index - 1;
-//	        		codeSeg = code.substring(codeBeg, codeEnd);
-//	        		wicks.append(this._parse(fuel, codeSeg, codeBeg));
-//	        		wicks.push(new Wick(endMatch[0], 'de2', endMatch.index));
-//        		}
-//    		}
+//            var match    = null,
+//                endMatch = null,
+//                codeBeg  = 0,
+//                codeEnd  = code.length,
+//                codeSeg  = '';
+//            
+//            while ((match = fuel.delimiters.start.exec(code)) != null) {
+//                fuel.delimiters.end.lastIndex = fuel.delimiters.start.lastIndex;
+//                if ((endMatch = fuel.delimiters.end.exec(code)) != null) {
+//                    wicks.push(new Wick(match[0], 'de1', match.index));
+//                    codeBeg = fuel.delimiters.start.lastIndex;
+//                    codeEnd = endMatch.index - 1;
+//                    codeSeg = code.substring(codeBeg, codeEnd);
+//                    wicks.append(this._parse(fuel, codeSeg, codeBeg));
+//                    wicks.push(new Wick(endMatch[0], 'de2', endMatch.index));
+//                }
+//            }
 //        } else {
-//        	wicks.append(this._parse(fuel, code, offset));
+//            wicks.append(this._parse(fuel, code, offset));
 //        }
         
         wicks = this._parse(fuel, code, offset);

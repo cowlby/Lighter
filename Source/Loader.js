@@ -60,10 +60,10 @@ var Loader = this.Loader = new Class({
 
     loadFuel: function(fuel, onLoad, onError)
     {
-    	if (typeof(Fuel[fuel]) == 'function' && typeof(Fuel[fuel].prototype) == 'object') {
-    		return onLoad();
-    	}
-    	
+        if (typeof(Fuel[fuel]) == 'function' && typeof(Fuel[fuel].prototype) == 'object') {
+            return onLoad();
+        }
+        
         var fileName = 'Fuel.' + fuel + '.js?' + Date.now();
         this.loadScript(fileName, fuel, onLoad, onError);
         
@@ -91,17 +91,17 @@ var Loader = this.Loader = new Class({
         
         var script = this.scripts[hash] || new Element('script', {
             src:  this.options.scripts + fileName,
-			type: 'text/javascript'
+            type: 'text/javascript'
         });
         
         script.addEvents({
             load:  onLoad,
             error: onError,
             readystatechange: function() {
-				if (['loaded', 'complete'].contains(this.readyState)) {
-				    onLoad();
-			    }
-			}
+                if (['loaded', 'complete'].contains(this.readyState)) {
+                    onLoad();
+                }
+            }
         });
         
         if (this.scripts[hash] == undefined) {
