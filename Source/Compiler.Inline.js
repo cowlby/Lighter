@@ -29,16 +29,17 @@ Compiler.Inline = new Class({
     
     _compile: function(fuel, flame, wicks)
     {
-		var el = new Element(this.options.containerTag);
-	    
-		// Step through each match and add wicks to the element.
+    	var innerHtml = '',
+    	    className = '';
+		
+		// Step through each match and add wicks as text to the innerHtml.
 		wicks.each(function(wick) {
-			el.grab(new Element('span', {
-				'text':  wick.text,
-				'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
-			}));
+			className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
+			innerHtml += '<span class="' + className + '">' + wick.text + '</span>';
 		}, this);
 		
-		return el;
+		return new Element(this.options.containerTag, {
+			'html': innerHtml
+		});
     }
 });
