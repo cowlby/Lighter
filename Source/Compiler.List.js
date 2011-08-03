@@ -30,29 +30,36 @@ Compiler.List = new Class({
     
     _compile: function(fuel, flame, wicks)
     {
-        var el      = new Element(this.options.containerTag),
-	        newLine = new Element('li', { 'class': flame + 'line' }).inject(el),
-    	    lines   = null;
-
+        var el        = new Element(this.options.containerTag),
+            innerHtml = '<li class="' + flame + 'line ' + flame + 'first">',
+            newHtml   = '',
+            className = '',
+            lines     = null;
+        
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
-    	wicks.each(function(wick) {
-    		
-    		lines = wick.text.split('\n');
-    		for (var i = 0; i < lines.length; i++) {
+        for (var i = 0; i < wicks.length; i++) {
+    		lines = wicks[i].text.split('\n');
+    		for (var j = 0; j < lines.length; j++) {
     			
-    			if (lines[i].length > 0) {
-	    			newLine.grab(new Element('span', {
-						'text': lines[i],
-						'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
-					}));
+    			if (lines[j].length > 0) {
+	    			className = wicks[i].type ? fuel.aliases[wicks[i].type] || wicks[i].type : '';
+	    			innerHtml += '<span class="' + className + '">' + lines[j] + '</span>';
     			}
 
-    			if (i < lines.length - 1) {
-    				newLine = new Element('li', { 'class': flame + 'line' }).inject(el);
+    			if (j < lines.length - 1) {
+    				className = flame + 'line';
+    				innerHtml += '</li><li class="' + className + '">';
     			}
     		}
-    	}, this);
+    	}
+    	
+    	innerHtml += '</li>';
+    	el.set('html', innerHtml);
+
+    	// Add last line classes to correct element.
+    	el.getLast().addClass(flame + 'last');
+    	
 
     	// Add alternate line styles based on pseudo-selector.
     	switch (this.options.altLines) {
@@ -70,10 +77,6 @@ Compiler.List = new Class({
 				el.getChildren(':' + this.options.altLines).addClass('alt');
     			break;
     	}
-
-    	// Add first/last line classes to correct element based on mode.
-    	el.getFirst().addClass(flame + 'first');
-    	el.getLast().addClass(flame + 'last');
     	
     	return el;
     }

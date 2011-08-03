@@ -33,10 +33,10 @@ Compiler.Inline = new Class({
     	    className = '';
 		
 		// Step through each match and add wicks as text to the innerHtml.
-		wicks.each(function(wick) {
-			className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
-			innerHtml += '<span class="' + className + '">' + wick.text + '</span>';
-		}, this);
+    	for (var i = 0; i < wicks.length; i++) {
+			className = wicks[i].type ? fuel.aliases[wicks[i].type] || wicks[i].type : '';
+			innerHtml += '<span class="' + className + '">' + wicks[i].text + '</span>';
+		}
 		
 		return new Element(this.options.containerTag, {
 			'html': innerHtml

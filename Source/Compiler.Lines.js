@@ -39,11 +39,10 @@ Compiler.Lines = new Class({
     _compile: function(fuel, flame, wicks)
     {
         var el           = new Element(this.options.containerTag.parent),
-	        newLine      = null,
+	        innerHtml    = '',
     	    lineNum      = 1,
     	    lines        = null,
-    	    containerTag = this.options.containerTag,
-    	    linesTag     = this.options.linesTag;
+    	    containerTag = this.options.containerTag;
 
     	// If lines need to be wrapped in an inner parent, create that element
     	// with this test. (E.g, tbody in a table)
@@ -51,43 +50,47 @@ Compiler.Lines = new Class({
     	    el = new Element(containerTag.child).inject(el);
     	}
     	
-    	// Create a new line and insert the line number if necessary.
-    	newLine = new Element(this.options.linesTag.child, {
-	    	'class': flame + 'line'
-	    }).inject(new Element(this.options.linesTag.parent).inject(el));
+    	innerHtml += '<' + this.options.linesTag.parent + '>';
     	
-    	newLine.getParent().grab(new Element(this.options.numbersTag, {
-			'text':  lineNum++,
-			'class': flame + 'num'
-		}), 'top');
+    	innerHtml += '<' + this.options.numbersTag + ' class="' + flame + 'num">'
+			+ lineNum++
+			+ '</' + this.options.numbersTag + '>';
+		
+		innerHtml += '<' + this.options.linesTag.child
+    		+ ' class="' + flame + 'line">';
 
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
-    	wicks.each(function(wick) {
-    		
+		for (var i = 0; i < wicks.length; i++) {
+    		var wick = wicks[i];
     		lines = wick.text.split('\n');
     		
-    		for (var i = 0; i < lines.length; i++) {
+    		for (var j = 0; j < lines.length; j++) {
     			
-    			if (lines[i].length > 0) {
-	    			newLine.grab(new Element('span', {
-						'text': lines[i],
-						'class': wick.type ? fuel.aliases[wick.type] || wick.type : ''
-					}));
+    			if (lines[j].length > 0) {
+	    			var className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
+	    			innerHtml += '<span class="' + className + '">' + lines[j] + '</span>';
     			}
     			
-    			if (i < lines.length - 1) {
-    				newLine = new Element(this.options.linesTag.child, {
-    			    	'class': flame + 'line'
-    			    }).inject(new Element(this.options.linesTag.parent).inject(el));
+    			if (j < lines.length - 1) {
+    		    	innerHtml += '</' + this.options.linesTag.child + '>';
+    		    	innerHtml += '</' + this.options.linesTag.parent + '>';
+    		    	innerHtml += '<' + this.options.linesTag.parent + '>';
+    		    	
+    		    	innerHtml += '<' + this.options.numbersTag
+	    	    		+ ' class="' + flame + 'num">'
+	    	    		+ lineNum++
+	    	    		+ '</' + this.options.numbersTag + '>';
     				
-    				newLine.getParent().grab(new Element(this.options.numbersTag, {
-    					'text':  lineNum++,
-    					'class': flame + 'num'
-    				}), 'top');
+    				innerHtml += '<' + this.options.linesTag.child
+    	    			+ ' class="' + flame + 'line">';
     			}
     		}
-    	}, this);
+    	};
+    	
+    	innerHtml += '</' + this.options.linesTag.child + '>';
+    	innerHtml += '</' + this.options.linesTag.parent + '>';
+    	el.set('html', innerHtml);
 
     	// Add alternate line styles based on pseudo-selector.
     	switch (this.options.altLines) {
