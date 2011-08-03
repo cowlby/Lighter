@@ -68,8 +68,9 @@ Compiler.Lines = new Class({
     		for (var j = 0; j < lines.length; j++) {
     			
     			if (lines[j].length > 0) {
-	    			var className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
-	    			innerHtml += '<span class="' + className + '">' + lines[j] + '</span>';
+	    			var className = wick.type ? fuel.aliases[wick.type] || wick.type : '',
+	    				text = lines[j].replace('<', '&lt;');
+	    			innerHtml += '<span class="' + className + '">' + text + '</span>';
     			}
     			
     			if (j < lines.length - 1) {
