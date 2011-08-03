@@ -1,0 +1,9 @@
+[submodule "Vendor/Packager"]
+	path = Vendor/Packager
+	url = https://github.com/kamicane/packager.git
+[submodule "Vendor/Finder"]
+	path = Vendor/Finder
+	url = https://github.com/symfony/Finder.git
+[submodule "Vendor/ClassLoader"]
+	path = Vendor/ClassLoader
+	url = https://github.com/symfony/ClassLoader

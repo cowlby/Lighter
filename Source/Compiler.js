@@ -5,12 +5,12 @@ description: Compiles an array of Wicks into an Element.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
-- Fuel
-- Wick
+  - Core/1.3
+  - Fuel
+  - Wick
 
 provides: [Compiler]
 ...

@@ -5,12 +5,12 @@ description: Java language fuel.
 license: MIT-style
 
 authors:
-- Italo Maia
+  - Italo Maia
 
 requires:
-- core/1.3: '*'
-- Fuel
-
+  - Core/1.3
+  - Fuel
+  
 provides: [Fuel.java]
 ...
 */

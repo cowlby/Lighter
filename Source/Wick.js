@@ -5,10 +5,10 @@ description: Represents a token with its source code position and type.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
+  - Core/1.3
 
 provides: [Wick]
 ...

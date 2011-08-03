@@ -5,11 +5,11 @@ description: Markdown language fuel.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
-- Fuel
+  - Core/1.3
+  - Fuel
 
 provides: [Fuel.md]
 ...

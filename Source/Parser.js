@@ -5,11 +5,12 @@ description: Code parsing engine for Lighter.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
-- Fuel
+  - Core/1.3
+  - Fuel
+  - Wick
 
 provides: [Parser]
 ...

@@ -5,11 +5,11 @@ description: Smart parsing engine for Lighter.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
-- Parser
+  - Core/1.3
+  - Parser
 
 provides: [Parser.Smart]
 ...

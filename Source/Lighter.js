@@ -5,14 +5,15 @@ description: Builds and displays an element containing highlighted code bits.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
-- Compiler
-- Fuel
-- Loader
-- Parser
+  - Core/1.3
+  - Compiler
+  - Fuel
+  - Loader
+  - Parser
+  - Wick
 
 provides: [Lighter]
 ...

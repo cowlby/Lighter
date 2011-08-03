@@ -5,10 +5,10 @@ description: File loading engine for Lighter.
 license: MIT-style
 
 authors:
-- Jose Prado
+  - Jose Prado
 
 requires:
-- core/1.3: '*'
+  - Core/1.3
 
 provides: [Loader]
 ...
