@@ -31,31 +31,35 @@ Compiler.List = new Class({
     _compile: function(fuel, flame, wicks)
     {
         var el        = new Element(this.options.containerTag),
-            innerHtml = '<li class="' + flame + 'line ' + flame + 'first">',
-            newHtml   = '',
+            innerHTML = '<li class="' + flame + 'line ' + flame + 'first">',
+            wick      = null,
+            text      = '',
             className = '',
-            lines     = null;
+            lines     = null,
+            i, j;
         
     	// Step through each match and add wicks to the Element by breaking
     	// them up into individual lines.
-        for (var i = 0; i < wicks.length; i++) {
-    		lines = wicks[i].text.split('\n');
-    		for (var j = 0; j < lines.length; j++) {
+        for (i = 0; i < wicks.length; i++) {
+        	wick  = wicks[i];
+    		lines = wick.text.split('\n');
+    		for (j = 0; j < lines.length; j++) {
     			
     			if (lines[j].length > 0) {
-	    			className = wicks[i].type ? fuel.aliases[wicks[i].type] || wicks[i].type : '';
-	    			innerHtml += '<span class="' + className + '">' + lines[j] + '</span>';
+	    			className = wick.type ? fuel.aliases[wick.type] || wick.type : '';
+	    			text = lines[j].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;');
+	    			innerHTML += '<span class="' + className + '">' + text + '</span>';
     			}
 
     			if (j < lines.length - 1) {
     				className = flame + 'line';
-    				innerHtml += '</li><li class="' + className + '">';
+    				innerHTML += '</li><li class="' + className + '">';
     			}
     		}
     	}
     	
-    	innerHtml += '</li>';
-    	el.set('html', innerHtml);
+        innerHTML += '</li>';
+    	el.set('html', innerHTML);
 
     	// Add last line classes to correct element.
     	el.getLast().addClass(flame + 'last');
