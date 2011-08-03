@@ -48,36 +48,6 @@ var Lighter = this.Lighter = new Class({
 	},
 	
 	/**
-	 * Returns the stored Loader.
-	 * 
-	 * @return {Loader}
-	 */
-	getLoader: function()
-	{
-		return this.loader;
-	},
-	
-	/**
-	 * Returns the stored Parser.
-	 * 
-	 * @return {Parser}
-	 */
-	getParser: function()
-	{
-		return this.parser;
-	},
-	
-	/**
-	 * Returns the stored Compiler
-	 * 
-	 * @return {Compiler}
-	 */
-	getCompiler: function()
-	{
-		return this.compiler;
-	},
-	
-	/**
 	 * Sets the Loader.
 	 * 
 	 * @param {Loader} loader
@@ -147,13 +117,13 @@ var Lighter = this.Lighter = new Class({
 		}
 
 		// Load fuel/flame to and build lighter when ready.
-		this.getLoader().loadFlame(flame);
-		this.getLoader().loadFuel(fuel, function() {
+		this.loader.loadFlame(flame);
+		this.loader.loadFuel(fuel, function() {
 			
 			fuel = new Fuel[fuel]();
 			
-			var wicks   = this.getParser().parse(fuel, code),
-			    lighter = this.getCompiler().compile(fuel, flame, wicks);
+			var wicks   = this.parser.parse(fuel, code),
+			    lighter = this.compiler.compile(fuel, flame, wicks);
 			
 			lighter.store('codeblock', codeblock);
 			lighter.store('plaintext', code);
