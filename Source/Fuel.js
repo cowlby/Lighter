@@ -88,6 +88,11 @@ var Fuel = this.Fuel = new Class({
 	    return this.rules;
 	},
 	
+	hasDelimiters: function()
+	{
+		return this.delimiters.start && this.delimiters.end;
+	},
+	
 	addRule: function(ruleName, regex, className)
 	{
 		this.rules[ruleName] = regex;
