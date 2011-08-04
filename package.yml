@@ -8,7 +8,7 @@ current: 2.1
 
 # Packager
 license: "MIT License"
-exports: "lighter.js"
+exports: "Lighter.js"
 sources:
   - "Source/Lighter.js"
   - "Source/Loader.js"

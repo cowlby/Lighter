@@ -1,7 +1,7 @@
 Lighter
 =======
 
-Lighter is a free syntax highlighting class developed with MooTools. It was created with the MooTools developer in mind and takes advantage of many of the Framework's features. Using it can be as simple as adding a single script to your webpage, selecting the elements you wish to highlight, and Lighter takes care of the rest. It is currently in use on the MooTools forge so you are seeing it in action right here.
+Lighter is a free syntax highlighting class developed for MooTools. It was created with the MooTools developer in mind and takes advantage of many of the Framework's features. Using it can be as simple as adding a single script to your webpage, selecting the elements you wish to highlight, and Lighter takes care of the rest. It is currently in use on the MooTools forge so you are seeing it in action right there.
 
 ![Screenshot](http://pradador.com/images/mootools/lighter.screenshot.jpg)
 
@@ -9,7 +9,7 @@ Lighter is a free syntax highlighting class developed with MooTools. It was crea
 Features
 --------
 
-* Written in MooTools. Requires version 1.2.1+
+* Written in MooTools. Requires version 1.3+
 * Easy to use with familiar MooTools syntax.
 * Outputs in various formats like ordered lists and tables. Choose the method that works best for you.
 * GeSHi-like class naming for (hopeful) style interoperability.
@@ -20,9 +20,9 @@ Features
 How to use
 ----------
 
-Download Lighter and extract the files. Copy the Compressed directory into a web-accessible directory of your choice. Feel free to rename the folder to anything you want. You can safely delete any Fuel/Flame files you're not going to use. For easiest usage, keep all the files in the same directory.
+Download Lighter and extract the files. Copy the files into a web-accessible directory of your choice. Feel free to rename the folder to anything you want. You can safely delete any Fuel/Flame files you're not going to use. For easiest usage, keep all the files in the same folder structure.
 
-Link to the Lighter.js file in the head section of your document after the MooTools file. The example below assumes you moved the Compressed folder into your scripts folder called "js" and renamed it to "lighter".
+Link to the Lighter.js file in the head section of your document after the MooTools file. The example below assumes you moved the files into your scripts folder under "js/Lighter".
 
 	#HTML
 	<head>
